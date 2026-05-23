@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Atom — Phatthana Pomthong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ SIDEBAR ============ -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo">
+      <div class="logo-circle">A</div>
+      <div class="logo-text">Atomify</div>
+    </div>
+    <ul class="nav-list">
+      <li class="nav-item active">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"/></svg>
+        <span data-i18n="nav_home">Home</span>
+      </li>
+      <li class="nav-item">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
+        <span data-i18n="nav_search">Search</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sidebar-library">
+    <div class="library-header">
+      <div class="library-title">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1.5.866l7-4.04 1-.535A2 2 0 0 0 24.5 15.5v-7a2 2 0 0 0-1-1.79l-8-4.576zM8 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"/></svg>
+        <span data-i18n="your_library">Your Library</span>
+      </div>
+      <div class="library-plus" title="Create">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"/></svg>
+      </div>
+    </div>
+    <div class="library-chips">
+      <button class="chip" data-i18n="chip_playlists">Playlists</button>
+      <button class="chip" data-i18n="chip_projects">Projects</button>
+    </div>
+    <div class="library-items">
+      <div class="lib-item">
+        <div class="lib-cover cover-2">A</div>
+        <div class="lib-info">
+          <span class="lib-name">Atom — Phatthana</span>
+          <span class="lib-sub" data-i18n="lib_profile">Profile</span>
+        </div>
+      </div>
+      <div class="lib-item">
+        <div class="lib-cover cover-1">FA</div>
+        <div class="lib-info">
+          <span class="lib-name">Flutter Application</span>
+          <span class="lib-sub" data-i18n="lib_mobile">Project · Mobile</span>
+        </div>
+      </div>
+      <div class="lib-item">
+        <div class="lib-cover cover-3">AI</div>
+        <div class="lib-info">
+          <span class="lib-name">AI Chat Bot</span>
+          <span class="lib-sub" data-i18n="lib_ml">Project · ML</span>
+        </div>
+      </div>
+      <div class="lib-item">
+        <div class="lib-cover cover-4">VT</div>
+        <div class="lib-info">
+          <span class="lib-name">Visual Try-On Web</span>
+          <span class="lib-sub" data-i18n="lib_aiweb">Project · AI / Web</span>
+        </div>
+      </div>
+      <div class="lib-item">
+        <div class="lib-cover cover-5">⚙</div>
+        <div class="lib-info">
+          <span class="lib-name" data-i18n="lib_interests_name">Tech & Cars & Travel</span>
+          <span class="lib-sub" data-i18n="lib_interests_sub">Playlist · Interests</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ============ MAIN ============ -->
+<main class="main" id="main">
+  <div class="topbar" id="topbar">
+    <div class="nav-arrows">
+      <button class="arrow" aria-label="back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"/></svg>
+      </button>
+      <button class="arrow" aria-label="forward">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 0 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"/></svg>
+      </button>
+    </div>
+    <div class="topbar-right">
+      <div class="lang-switcher" role="group" aria-label="Language switcher">
+        <button class="lang-btn active" data-lang="th" type="button">TH</button>
+        <button class="lang-btn" data-lang="en" type="button">EN</button>
+        <button class="lang-btn" data-lang="zh" type="button">中文</button>
+      </div>
+      <div class="profile-circle">PP</div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero fade-in d1">
+    <div class="hero-cover"><img src="images/profile.jpg" alt="Atom"></div>
+    <div class="hero-info">
+      <div class="hero-meta" style="margin-bottom: 6px;">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="#1ed760"><path d="M7 0a7 7 0 1 1 0 14A7 7 0 0 1 7 0zm3.847 4.282a.95.95 0 0 0-1.34 0L5.66 8.128 4.493 6.962a.95.95 0 1 0-1.343 1.343L4.99 10.14a.95.95 0 0 0 1.342 0l4.515-4.515a.95.95 0 0 0 0-1.343z"/></svg>
+        <span style="color: white; font-weight: 500;" data-i18n="verified">Verified Profile</span>
+      </div>
+      <span class="hero-type" data-i18n="profile">Profile</span>
+      <h1 class="hero-name">Atom<br/><span class="accent">phatthana pomthong</span></h1>
+      <div class="hero-meta">
+        <strong>atomify.dev</strong>
+        <span class="dot">•</span>
+        <span><strong>3</strong> <span data-i18n="projects_count">projects</span></span>
+        <span class="dot">•</span>
+        <span><strong>6</strong> <span data-i18n="skills_count">skills</span></span>
+        <span class="dot">•</span>
+        <span data-i18n="role">Full-Stack Developer</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTROLS -->
+  <div class="controls fade-in d2">
+    <button class="play-btn" title="Play">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
+    </button>
+    <button class="icon-btn" title="Follow">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4a4 4 0 014 4 4 4 0 11-8 0 4 4 0 014-4zm0 14a8 8 0 018-8h-1a7 7 0 00-7 7v1a7 7 0 00-7-7H4a8 8 0 018 8z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="8" r="3.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+    <button class="icon-btn" title="More">
+      <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM14.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+    </button>
+  </div>
+
+  <!-- ABOUT (popular tracks) -->
+  <section class="section fade-in d3">
+    <div class="section-head">
+      <h2 class="section-title" data-i18n="popular_title">Popular</h2>
+    </div>
+    <div class="tracks">
+      <div class="track">
+        <div>
+          <span class="track-num">1</span>
+          <span class="track-play">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+          </span>
+        </div>
+        <div class="track-main">
+          <div class="track-cover cover-1">💻</div>
+          <span class="track-title" data-i18n="track1_title">Built for Technology</span>
+        </div>
+        <span class="track-plays" data-i18n="track1_desc">หลงใหลในเทคโนโลยี และการสร้างสิ่งใหม่</span>
+        <span class="track-time">∞</span>
+      </div>
+      <div class="track">
+        <div>
+          <span class="track-num">2</span>
+          <span class="track-play">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+          </span>
+        </div>
+        <div class="track-main">
+          <div class="track-cover cover-3">🏎️</div>
+          <span class="track-title" data-i18n="track2_title">Engine & Asphalt</span>
+        </div>
+        <span class="track-plays" data-i18n="track2_desc">รถยนต์ — เครื่องยนต์ ดีไซน์ และความเร็ว</span>
+        <span class="track-time">∞</span>
+      </div>
+      <div class="track">
+        <div>
+          <span class="track-num">3</span>
+          <span class="track-play">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+          </span>
+        </div>
+        <div class="track-main">
+          <div class="track-cover cover-2">🌏</div>
+          <span class="track-title" data-i18n="track3_title">Wanderlust</span>
+        </div>
+        <span class="track-plays" data-i18n="track3_desc">ท่องเที่ยว เก็บประสบการณ์ใหม่ๆ จากทุกที่</span>
+        <span class="track-time">∞</span>
+      </div>
+      <div class="track">
+        <div>
+          <span class="track-num">4</span>
+          <span class="track-play">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+          </span>
+        </div>
+        <div class="track-main">
+          <div class="track-cover cover-4">⚡</div>
+          <span class="track-title" data-i18n="track4_title">Full-Stack Mindset</span>
+        </div>
+        <span class="track-plays" data-i18n="track4_desc">ออกแบบและสร้างได้ตั้งแต่ frontend จนถึง backend</span>
+        <span class="track-time">∞</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section fade-in d4">
+    <div class="section-head">
+      <h2 class="section-title" data-i18n="projects_title">Projects</h2>
+      <a class="show-all" data-i18n="show_all">Show all</a>
+    </div>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-cover" style="background: linear-gradient(135deg, #02569B 0%, #54C5F8 100%);">
+          Flutter App
+        </div>
+        <button class="card-play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+        </button>
+        <div class="card-title">Flutter Application</div>
+        <div class="card-sub" data-i18n="project1_desc">Cross-platform mobile app built with Flutter & Dart</div>
+      </div>
+      <div class="card">
+        <div class="card-cover" style="background: linear-gradient(135deg, #10A37F 0%, #1a1a2e 100%);">
+          AI Chat
+        </div>
+        <button class="card-play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+        </button>
+        <div class="card-title">AI Chat Bot</div>
+        <div class="card-sub" data-i18n="project2_desc">Intelligent conversation bot powered by ML & NLP</div>
+      </div>
+      <div class="card">
+        <div class="card-cover" style="background: linear-gradient(135deg, #f037a5 0%, #7d2b8b 100%);">
+          Visual Try-On
+        </div>
+        <button class="card-play">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
+        </button>
+        <div class="card-title">Visual Try-On Web</div>
+        <div class="card-sub" data-i18n="project3_desc">Web app for trying on items virtually using computer vision</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section fade-in d5">
+    <div class="section-head">
+      <h2 class="section-title" data-i18n="skills_title">Skills & Tech Stack</h2>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #61DAFB 0%, #1e3a5f 100%);">
+        <span class="skill-name">React</span>
+        <div class="skill-mini-cover">R</div>
+      </div>
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #000000 0%, #434343 100%);">
+        <span class="skill-name">Next.js</span>
+        <div class="skill-mini-cover">N</div>
+      </div>
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #02569B 0%, #54C5F8 100%);">
+        <span class="skill-name">Flutter</span>
+        <div class="skill-mini-cover">F</div>
+      </div>
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #339933 0%, #1a3a1a 100%);">
+        <span class="skill-name">Node.js</span>
+        <div class="skill-mini-cover">N</div>
+      </div>
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #3776AB 0%, #FFD43B 100%);">
+        <span class="skill-name">Python</span>
+        <div class="skill-mini-cover">P</div>
+      </div>
+      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #E34F26 0%, #264de4 100%);">
+        <span class="skill-name">HTML / CSS</span>
+        <div class="skill-mini-cover">H</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section fade-in d5">
+    <div class="section-head">
+      <h2 class="section-title" data-i18n="connect_title">Let's Connect</h2>
+    </div>
+    <div class="contact-card">
+      <div style="position: relative; z-index: 1;">
+        <div class="contact-label" data-i18n="get_in_touch">Get in touch</div>
+        <h3 class="contact-title"><span data-i18n="build_together_1">Build something</span> <span class="accent" data-i18n="build_together_2">together</span></h3>
+        <a class="contact-email" href="mailto:phatthanapomthong@gmail.com">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          phatthanapomthong@gmail.com
+        </a>
+      </div>
+      <a href="mailto:phatthanapomthong@gmail.com" style="text-decoration: none;">
+        <button class="contact-btn" data-i18n="send_message">Send Message</button>
+      </a>
+    </div>
+    <p style="text-align: center; color: var(--text-tertiary); font-size: 13px; margin-top: 32px;">
+      © 2026 Phatthana Pomthong (Atom) · <span data-i18n="made_with">Made with</span> <span style="color: var(--green-bright);">♥</span> & code
+    </p>
+  </section>
+
+  <div style="height: 24px;"></div>
+</main>
+
+<!-- ============ PLAYER ============ -->
+<footer class="player">
+  <div class="now-playing">
+    <div class="now-cover">A</div>
+    <div class="now-info">
+      <div class="now-title" data-i18n="now_title">Hello, I'm Atom</div>
+      <div class="now-artist">Phatthana Pomthong</div>
+    </div>
+    <div class="now-icons">
+      <button class="player-btn" title="Save">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="#1ed760"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="player-center">
+    <div class="player-controls">
+      <button class="player-btn" title="Shuffle">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"/><path d="M7.5 10.723l.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"/></svg>
+      </button>
+      <button class="player-btn" title="Previous">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"/></svg>
+      </button>
+      <button class="player-play" title="Play">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>
+      </button>
+      <button class="player-btn" title="Next">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg>
+      </button>
+      <button class="player-btn" title="Repeat">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"/></svg>
+      </button>
+    </div>
+    <div class="progress-row">
+      <span class="time">1:24</span>
+      <div class="progress-bar">
+        <div class="progress-fill">
+          <div class="progress-thumb"></div>
+        </div>
+      </div>
+      <span class="time">4:32</span>
+    </div>
+  </div>
+
+  <div class="player-right">
+    <button class="player-btn" title="Lyrics">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.118l-2.619-2.62A63303.13 63303.13 0 0 0 4.74 9.075L2.065 12.12a1.287 1.287 0 0 0 1.816 1.816l3.06-2.688 3.56-3.129zM7.12 4.094a4.331 4.331 0 1 1 4.786 4.786l-3.974 3.493-3.06 2.689a2.787 2.787 0 0 1-3.933-3.933l2.676-3.045 3.505-3.99z"/></svg>
+    </button>
+    <button class="player-btn" title="Queue">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"/></svg>
+    </button>
+    <button class="player-btn" title="Devices">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 2.75C6 1.784 6.784 1 7.75 1h6.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15h-6.5A1.75 1.75 0 0 1 6 13.25V2.75zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h6.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25h-6.5zm-6 0a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25H4V11H1.75A1.75 1.75 0 0 1 0 9.25v-6.5C0 1.784.784 1 1.75 1H4v1.5H1.75zM4 15v-1.5h1.5V15H4z"/></svg>
+    </button>
+    <button class="player-btn" title="Volume">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.973A3.639 3.639 0 0 1 2.066 4.85l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"/></svg>
+    </button>
+    <div class="volume-bar"><div class="volume-fill"></div></div>
+    <button class="player-btn" title="Expand">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.53 9.47a.75.75 0 0 1 0 1.06l-2.72 2.72h1.018a.75.75 0 0 1 0 1.5H1.25v-3.578a.75.75 0 0 1 1.5 0v1.018l2.72-2.72a.75.75 0 0 1 1.06 0zm2.94-2.94a.75.75 0 0 1 0-1.06l2.72-2.72h-1.018a.75.75 0 1 1 0-1.5h3.578V4.83a.75.75 0 0 1-1.5 0V3.81l-2.72 2.72a.75.75 0 0 1-1.06 0z"/></svg>
+    </button>
+  </div>
+</footer>
+
+<script src="js/translations.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

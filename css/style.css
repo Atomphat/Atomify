@@ -400,8 +400,17 @@ body {
   letter-spacing: -0.02em;
 }
 
+.hero-bio {
+  color: rgba(255,255,255,0.85);
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 640px;
+  margin-bottom: 10px;
+}
+
 .hero-meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
   color: var(--text-secondary);
@@ -630,8 +639,8 @@ body {
 
 .card-play {
   position: absolute;
-  bottom: 90px;
-  right: 28px;
+  bottom: 8px;
+  right: 8px;
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -666,10 +675,107 @@ body {
   font-weight: 400;
   line-height: 1.4;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.chip-tag {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.65);
+  color: #ffd54a;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+/* ============ EXPERIENCE / EDUCATION ============ */
+.exp-card {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  transition: background 0.3s;
+}
+
+.exp-card:hover { background: var(--bg-card-hover); }
+
+.exp-cover {
+  width: 96px;
+  height: 96px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 28px;
+  color: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+
+.exp-body { min-width: 0; }
+
+.exp-type {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--green-bright);
+}
+
+.exp-role {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 4px 0 6px;
+}
+
+.exp-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.exp-meta strong { color: white; }
+
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+
+.exp-points {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left: 18px;
+}
+
+.exp-points li + li { margin-top: 4px; }
+
+.exp-note { color: #ffd54a; font-size: 14px; font-weight: 600; }
 
 /* skill cards */
 .skill-grid {
@@ -701,6 +807,30 @@ body {
 }
 
 .skill-card:hover { transform: translateY(-2px); }
+
+.skill-groups {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skill-group {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.skill-group-label {
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.skill-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.skill-chips .chip-tag { font-size: 13px; color: white; padding: 5px 12px; }
 
 .skill-name {
   position: relative;
@@ -791,6 +921,25 @@ body {
 }
 
 .contact-email:hover { gap: 14px; text-decoration: underline; }
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 10px;
+}
+
+.contact-link {
+  color: rgba(255,255,255,0.9);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contact-link:hover { text-decoration: underline; color: white; }
 
 .contact-btn {
   background: white;
@@ -985,6 +1134,12 @@ body {
   .track-plays { display: none; }
   .topbar { padding: 12px 16px; }
   .lang-btn { padding: 6px 10px; font-size: 11px; }
+  .exp-card { flex-direction: column; padding: 16px; }
+  .exp-cover { width: 64px; height: 64px; font-size: 20px; }
+  .skill-group { grid-template-columns: 1fr; gap: 6px; }
+  .card-grid, .skill-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .card { padding: 12px; }
+  .card-cover { font-size: 20px; }
 }
 
 /* Scrollbar */

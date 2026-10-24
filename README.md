@@ -1,43 +1,33 @@
-# Atom — Portfolio Website 🎵
+# Atomify · HI! I'M ATOM
 
-เว็บไซต์แนะนำตัว Phatthana Pomthong (Atom) ธีม Spotify
-รองรับ 3 ภาษา: ไทย / English / 中文
+เว็บแนะนำตัว Phatthana Pomthong (Atom) สไตล์เดียวกับเว็บตัวอย่าง OATOH!:
+พื้นครีมโอ๊ต สีส้มเป็นสีเดียวที่ตะโกน ตัวหนังสือยักษ์ (Bowlby One) บินเข้ามาตอนเลื่อน
+รูปอยู่ในแคปซูล สติกเกอร์ขอบดำ และเกมลากของลงกล่อง มี 3 ภาษา ไทย / EN / 中文
 
-## 📁 โครงสร้างไฟล์
+เวอร์ชันเก่า: ธีม Spotify อยู่ใน `_spotify-v1/` และแบบคลิปอธิบาย Vox อยู่ใน `_vox-v2.html`
+
+## โครงสร้าง
 
 ```
-atom-portfolio/
-├── index.html              ← ไฟล์หลัก เปิดด้วยเบราว์เซอร์
-├── README.md               ← ไฟล์นี้
-├── css/
-│   └── style.css           ← สไตล์ทั้งหมด
-└── js/
-    ├── translations.js     ← ข้อความ 3 ภาษา (TH/EN/ZH)
-    └── main.js             ← logic เปลี่ยนภาษา + scroll effect
+index.html                 ← ทั้งเว็บอยู่ในไฟล์เดียว (HTML + CSS + JS, GSAP จาก cdnjs)
+images/profile-capsule.jpg ← รูปในแคปซูลหน้าแรก (ครอป 9:16 จาก profile.jpg)
+images/atom-halftone.png   ← สติกเกอร์ตัว Atom ท้ายหน้า
+images/work/               ← ภาพหน้าจอผลงาน
+tools/record-reel.mjs      ← render วิดีโอ show reel ทีละเฟรม (1920×1080)
+tools/frames2mp4.swift     ← รวมเฟรมเป็น MP4
+tools/halftone.swift       ← ตัดพื้นหลังด้วย Vision แล้วทำเป็นภาพ halftone
+showreel/                  ← วิดีโอ show reel (ไม่เข้า git เพราะไฟล์ใหญ่)
 ```
 
-## 🚀 วิธีใช้
+## แก้เนื้อหา
 
-1. ดาวน์โหลดโฟลเดอร์ `atom-portfolio` ทั้งหมด
-2. นำไปวางใน `Documents` (หรือที่ไหนก็ได้)
-3. เปิดไฟล์ `index.html` ด้วยเบราว์เซอร์ (Chrome, Safari, Firefox, Edge)
+- ผลงาน: อาร์เรย์ `WORKS` (ภาพอยู่ใน `images/work/`)
+- ของในเกมจัดเว็บ: `FEATS` · เครื่องมือ: `KITS` · ข้อความทุกภาษา: `T`
+- `?reel` ให้ recorder คุมเวลา gsap เองทีละเฟรม และเกมจะเล่นเองในวิดีโอ
 
-## ✏️ แก้ไขข้อมูล
+## ทำวิดีโอ show reel ใหม่
 
-- **แก้ข้อความไทย/อังกฤษ/จีน** → แก้ไฟล์ `js/translations.js`
-- **เปลี่ยนสี/ดีไซน์** → แก้ไฟล์ `css/style.css`
-- **เปลี่ยนชื่อโปรเจกต์ / โครงสร้าง** → แก้ไฟล์ `index.html`
-- **เปลี่ยนอีเมล** → ค้นหา `phatthanapomthong@gmail.com` ใน `index.html`
-
-## 🌐 ฟีเจอร์
-
-- ✅ ปุ่มเปลี่ยนภาษา 3 ภาษา (TH/EN/中文)
-- ✅ จำภาษาที่เลือกไว้ใน localStorage
-- ✅ Responsive รองรับมือถือ
-- ✅ Animation fade-in ตอนโหลด
-- ✅ Topbar เบลอเมื่อเลื่อน
-- ✅ Hover effect แบบ Spotify จริงๆ
-
-## 📧 ติดต่อ
-
-phatthanapomthong@gmail.com
+```
+node tools/record-reel.mjs <path ของ puppeteer-core.js> /tmp/reel-frames
+swift tools/frames2mp4.swift /tmp/reel-frames showreel/atomify-showreel-1920x1080.mp4 30
+```

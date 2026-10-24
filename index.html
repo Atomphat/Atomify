@@ -1,374 +1,779 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Atom — Phatthana Pomthong</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atom · นักพัฒนา Full-Stack</title>
+<meta name="description" content="Atom นักพัฒนา Full-Stack ทำเว็บ แอป และเกม ที่ใช้งานได้จริง">
+<meta name="theme-color" content="#f4eee2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans+Thai:wght@400;500;700;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Kanit:wght@300;400;500;700;800&family=Noto+Sans+SC:wght@400;500;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --oat: #f4eee2;
+  --oat-deep: #e8dfcc;
+  --cream: #fffdf8;
+  --tang: #ec4d0e;
+  --matcha: #3e8e4f;
+  --cocoa: #4a2c1e;
+  --ink: #121212;
+  --ink-soft: #4d4740;
+  --display: "Bowlby One", "Kanit", sans-serif;
+  --thai: "Kanit", "Noto Sans SC", sans-serif;
+  --body: "Kanit", "Noto Sans SC", system-ui, sans-serif;
+  --glass: rgba(255,253,248,.32);
+  --glass-hi: rgba(255,253,248,.5);
+  --glass-ink: rgba(18,18,18,.74);
+  --glass-blur: blur(12px) saturate(190%) brightness(1.06);
+  --glass-rim: inset 0 1px 1px rgba(255,255,255,.95), inset 0 -1px 1px rgba(255,255,255,.4), inset 0 0 0 1px rgba(255,255,255,.28);
+  --glass-drop: 0 10px 28px -12px rgba(18,18,18,.38), 0 2px 6px -2px rgba(18,18,18,.18);
+}
+html:lang(zh-Hans) { --thai: "Noto Sans SC", "Kanit", sans-serif; --body: "Noto Sans SC", "Kanit", system-ui, sans-serif; }
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scrollbar-color: var(--tang) var(--oat); }
+body { margin: 0; background: var(--oat); color: var(--ink); font: 300 1.0625rem/1.7 var(--body); overflow-x: hidden; }
+::selection { background: var(--tang); color: #fff; }
+:focus-visible { outline: 3px solid var(--tang); outline-offset: 3px; border-radius: 8px; }
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.wrap { width: min(100% - 32px, 1200px); margin-inline: auto; }
+
+/* ---------- top chrome ---------- */
+.top { position: fixed; z-index: 30; top: 16px; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 clamp(14px, 3vw, 36px); pointer-events: none; }
+.top > * { pointer-events: auto; }
+.logo { width: 58px; height: 58px; border-radius: 50%; background: var(--tang); color: #fff; display: grid; place-items: center; text-decoration: none; font: 400 .92rem/1 var(--display); box-shadow: 0 0 0 3px var(--ink), 0 6px 16px -6px rgba(18,18,18,.5); transform: rotate(-8deg); }
+.pill-nav { display: flex; gap: 2px; border-radius: 999px; padding: 5px; }
+.pill-nav a { position: relative; text-decoration: none; padding: .45em 1em; border-radius: 999px; font: 500 .95rem/1.2 var(--thai); white-space: nowrap; transition: background .25s, color .25s, box-shadow .25s, transform .25s cubic-bezier(.34,1.56,.64,1); }
+.pill-nav a:hover { background: rgba(255,255,255,.42); }
+.pill-nav a.on, .langs button[aria-pressed="true"] { background: var(--glass-ink); color: var(--cream); box-shadow: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1px 1px rgba(255,255,255,.12), 0 4px 12px -4px rgba(18,18,18,.45); }
+.langs { display: flex; gap: 4px; border-radius: 999px; padding: 5px; }
+.langs button { border: 0; background: none; border-radius: 999px; min-height: 36px; min-width: 40px; padding: 0 .6em; font: 500 .85rem/1 var(--thai); transition: background .25s, color .25s, box-shadow .25s; }
+.langs button:hover:not([aria-pressed="true"]) { background: rgba(255,255,255,.42); }
+/* a drop of tinted glass that slides to whatever the mouse is over, then settles back on the active item */
+.lg-thumb { position: absolute; left: 0; top: 0; z-index: 0; border-radius: 999px; pointer-events: none; background: var(--glass-ink); box-shadow: inset 0 1px 1px rgba(255,255,255,.35), inset 0 -1px 1px rgba(255,255,255,.12), 0 4px 12px -4px rgba(18,18,18,.45); }
+.has-thumb > a, .has-thumb > button { position: relative; z-index: 1; }
+.pill-nav.has-thumb a.on, .pill-nav.has-thumb a:hover, .langs.has-thumb button[aria-pressed], .langs.has-thumb button:hover:not([aria-pressed="true"]) { background: none; box-shadow: none; color: var(--ink); }
+.pill-nav.has-thumb a[data-lit], .langs.has-thumb button[data-lit] { color: var(--cream); }
+
+/* ---------- liquid glass: frosted body, bright rim, light that follows the pointer ---------- */
+.pill-nav, .langs, .hero-bar, .btn, .feat {
+  position: relative; isolation: isolate;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-rim), var(--glass-drop);
+}
+/* specular edge: brighter on the lit corners, gone along the sides */
+.pill-nav::before, .langs::before, .hero-bar::before, .btn::before, .feat::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: linear-gradient(140deg, rgba(255,255,255,.95), rgba(255,255,255,.08) 32%, rgba(255,255,255,0) 58%, rgba(255,255,255,.65));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+/* glare that tracks the pointer */
+.btn::after, .feat::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(120% 140% at var(--mx, 30%) var(--my, -10%), rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+  opacity: .55; transition: opacity .3s;
+}
+.btn:hover::after, .feat:hover::after { opacity: 1; }
+.lg-refract .pill-nav, .lg-refract .langs, .lg-refract .hero-bar, .lg-refract .btn-soft, .lg-refract .feat {
+  -webkit-backdrop-filter: url(#lg-refract) var(--glass-blur); backdrop-filter: url(#lg-refract) var(--glass-blur);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .pill-nav, .langs, .hero-bar, .btn-soft { background: rgba(255,253,248,.88); }
+}
+
+/* ---------- hero: words settle around the capsule ---------- */
+.hero { position: relative; height: 180svh; }
+.stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; place-items: center; }
+.words { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; pointer-events: none; }
+.words span { display: block; font: 400 clamp(4.6rem, 17vw, 15.5rem)/.86 var(--display); color: var(--tang); letter-spacing: -.02em; will-change: transform; }
+.capsule {
+  position: relative; z-index: 2;
+  width: clamp(190px, 26vw, 330px); aspect-ratio: 9 / 16; max-height: 64svh;
+  border-radius: 999px; overflow: hidden; background: var(--cocoa);
+  box-shadow: 0 0 0 6px var(--cream), 0 0 0 8px var(--ink), 0 30px 60px -20px rgba(18,18,18,.45);
+  will-change: transform;
+}
+.capsule img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; }
+.sticker { position: absolute; z-index: 3; width: clamp(56px, 7.5vw, 104px); pointer-events: none; will-change: transform; overflow: visible; }
+.sticker use { animation: bob 3.2s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+.s1 { left: calc(50% - clamp(170px, 22vw, 330px)); top: 22%; }
+.s2 { left: calc(50% + clamp(110px, 15vw, 230px)); top: 14%; }
+.s2 use { animation-duration: 4s; }
+.s3 { left: calc(50% - clamp(160px, 20vw, 300px)); top: 62%; }
+.s3 use { animation-duration: 3.6s; }
+.s4 { left: calc(50% + clamp(120px, 17vw, 260px)); top: 58%; }
+.s4 use { animation-duration: 3.8s; }
+@keyframes bob { from { transform: translateY(-6px) rotate(-6deg); } to { transform: translateY(8px) rotate(8deg); } }
+.hero-bar {
+  position: absolute; z-index: 4; left: 50%; bottom: clamp(18px, 5svh, 44px); translate: -50% 0;
+  display: flex; gap: 8px; padding: 7px; border-radius: 999px;
+}
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .5em; min-height: 50px; padding: 0 1.4em; border-radius: 999px; border: 0; text-decoration: none; font: 500 1rem/1 var(--thai); white-space: nowrap; transition: transform .35s cubic-bezier(.34,1.56,.64,1), background .25s, box-shadow .25s; }
+.btn svg { width: 1.25em; height: 1.25em; flex: none; }
+.btn:hover { transform: scale(1.04); box-shadow: var(--glass-rim), 0 14px 32px -12px rgba(18,18,18,.45), 0 2px 6px -2px rgba(18,18,18,.18); }
+.btn:active { transform: scale(.96); transition-duration: .12s; }
+.btn-ink { background: var(--glass-ink); color: var(--cream); box-shadow: inset 0 1px 1px rgba(255,255,255,.4), inset 0 -1px 1px rgba(255,255,255,.14), var(--glass-drop); }
+.btn-ink::after { opacity: .3; }
+.btn-ink:hover::after { opacity: .5; }
+.btn-soft { background: var(--glass); color: var(--ink); }
+.btn-soft:hover { background: var(--glass-hi); }
+.btn-cream { background: var(--glass-hi); color: var(--ink); }
+.welcome { position: absolute; z-index: 3; left: 50%; top: 66%; translate: -50% 0; width: min(92vw, 680px); text-align: center; opacity: 0; }
+.welcome h1 { margin: 0; font: 400 clamp(1.1rem, 2vw, 1.4rem)/1.6 var(--thai); text-wrap: balance; }
+.welcome h1 b { font-weight: 700; }
+
+/* ---------- about: a card opens out of a pill ---------- */
+section { position: relative; padding: clamp(72px, 10vw, 128px) 0; }
+h2.title { margin: 0 0 .4em; font: 700 clamp(2.1rem, 5vw, 3.8rem)/1.1 var(--thai); letter-spacing: -.01em; text-wrap: balance; }
+h2.title .en { font-family: var(--display); font-weight: 400; color: var(--tang); }
+.lede { max-width: 56ch; margin: 0; color: var(--ink-soft); font-size: 1.1rem; }
+.about .card { position: relative; border-radius: 32px; overflow: hidden; min-height: 580px; will-change: transform, border-radius; transform-origin: 50% 100%; background: var(--cocoa); }
+.shots { position: absolute; inset: -20% -10%; display: grid; align-content: center; gap: 22px; transform: rotate(-8deg); opacity: .9; }
+.shots .row { display: flex; gap: 22px; width: max-content; animation: slide 46s linear infinite; }
+.shots .row.r2 { animation-direction: reverse; animation-duration: 52s; }
+.shots img { width: clamp(220px, 24vw, 320px); aspect-ratio: 16 / 10; object-fit: cover; border-radius: 18px; box-shadow: 0 0 0 4px var(--cream); }
+@keyframes slide { to { transform: translateX(-50%); } }
+.about .panel {
+  position: relative; z-index: 2; margin: clamp(18px, 3vw, 36px); max-width: 460px;
+  background: rgba(255,253,248,.95); border-radius: 24px; padding: clamp(22px, 3vw, 34px);
+  box-shadow: 0 20px 40px -20px rgba(0,0,0,.45);
+}
+.about h2 { font: 400 clamp(2rem, 4vw, 3rem)/1 var(--display); color: var(--tang); margin: 0 0 .4em; }
+.about p { margin: 0; }
+.about ul { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; }
+.about li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
+.about li svg { width: 24px; height: 24px; margin-top: 3px; color: var(--matcha); }
+.badge-round { position: absolute; z-index: 3; right: clamp(18px, 4vw, 48px); bottom: clamp(18px, 4vw, 48px); width: 130px; height: 130px; }
+
+/* ---------- works: a shelf of project cards ---------- */
+.works .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 32px; }
+.count { font: 400 clamp(3rem, 7vw, 5.5rem)/.9 var(--display); color: var(--tang); }
+.count small { display: block; font: 500 .95rem/1.3 var(--thai); color: var(--ink-soft); text-align: right; }
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(270px, 27vw, 340px); gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 40px clamp(16px, calc((100vw - 1200px) / 2), 999px) 70px; scrollbar-width: none; }
+.rail::-webkit-scrollbar { display: none; }
+html.pinx .works { height: 100svh; padding: 112px 0 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+html.pinx .rail { overflow: visible; width: max-content; scroll-snap-type: none; will-change: transform; }
+.work { scroll-snap-align: start; border-radius: 28px; padding: 18px 18px 20px; background: var(--bg); color: var(--fg, var(--ink)); position: relative; display: grid; grid-template-rows: auto auto 1fr; gap: 14px; min-height: 420px; text-decoration: none; box-shadow: 0 18px 36px -22px rgba(18,18,18,.5); transition: transform .4s cubic-bezier(.2,.8,.2,1); }
+.work:hover { transform: translateY(-6px) rotate(-1deg); }
+.work .tag { justify-self: start; font: 500 .8rem/1 var(--thai); padding: .45em .8em; border-radius: 999px; background: var(--cream); color: var(--ink); }
+.work .stamp { position: absolute; top: 14px; right: 16px; font: 400 .95rem/1 var(--display); padding: .4em .7em .35em; border-radius: 999px; border: 2.5px solid currentColor; transform: rotate(6deg); }
+.work .frame { aspect-ratio: 16 / 10; border-radius: 18px; overflow: hidden; background: var(--ink); box-shadow: 0 0 0 3px var(--ink); transform: rotate(-2deg); transition: transform .6s cubic-bezier(.34,1.56,.64,1); }
+.work:hover .frame { transform: rotate(1.5deg) scale(1.04); }
+.work .frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.work .frame.bar { display: grid; place-items: center; background: linear-gradient(180deg, #2a2a2e, #121212); }
+.work .frame.bar img { width: 88%; height: auto; object-fit: contain; border-radius: 6px; }
+.work h3 { margin: 0; font: 700 1.3rem/1.25 var(--thai); }
+.work p { margin: 2px 0 0; font-size: .92rem; line-height: 1.5; opacity: .88; }
+.work .go { align-self: end; font: 500 .9rem/1 var(--thai); }
+
+/* ---------- build-a-site game ---------- */
+.build { background: var(--tang); color: var(--ink); overflow: hidden; }
+.build h2.title .en { color: var(--cream); }
+.build .lede { color: #2a1208; }
+.game { margin-top: 40px; display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(24px, 5vw, 64px); align-items: center; }
+.tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.feat { border: 0; --glass: rgba(255,253,248,.24); border-radius: 22px; padding: 14px 8px 12px; display: grid; justify-items: center; gap: 6px; color: var(--ink); touch-action: none; transition: background .25s, transform .3s cubic-bezier(.34,1.56,.64,1), opacity .2s; user-select: none; }
+.feat:hover { --glass: rgba(255,253,248,.36); transform: translateY(-3px); }
+.feat:active { transform: scale(.95); }
+.feat.used { opacity: .4; }
+.feat svg { width: 62%; pointer-events: none; }
+.feat b { font: 500 .92rem/1.25 var(--thai); text-align: center; }
+.boxwrap { position: relative; justify-self: center; width: min(100%, 460px); }
+.box { position: relative; background: var(--cream); border-radius: 26px; padding: 26px 22px 22px; box-shadow: 0 0 0 4px var(--ink), 0 30px 60px -24px rgba(0,0,0,.5); color: var(--ink); transition: transform .3s cubic-bezier(.34,1.56,.64,1); }
+.box.hot { transform: scale(1.03) rotate(-1deg); }
+.box .lid { position: absolute; left: 50%; top: -18px; translate: -50% 0; background: var(--ink); color: var(--cream); border-radius: 999px; padding: .35em 1em; font: 400 .9rem/1 var(--display); white-space: nowrap; }
+.slots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.slot { aspect-ratio: 1; border-radius: 18px; border: 2.5px dashed #d8cdb8; display: grid; place-items: center; background: var(--oat); position: relative; }
+.slot.full { border-style: solid; border-color: var(--ink); background: var(--oat-deep); }
+.slot button { border: 0; background: none; padding: 12%; width: 100%; height: 100%; display: grid; justify-items: center; align-content: center; gap: 4px; }
+.slot button svg { width: 62%; animation: pop .55s cubic-bezier(.34,1.56,.64,1); }
+.slot button span { font: 500 .82rem/1.2 var(--thai); text-align: center; }
+.slot .hint { font: 400 .85rem/1.3 var(--thai); color: #6f6450; text-align: center; padding: 8px; }
+@keyframes pop { from { transform: scale(.2) rotate(-30deg); } to { transform: none; } }
+.box-foot { margin-top: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.box-foot .sum { font: 500 1rem/1.3 var(--thai); }
+.box-foot .sum b { font: 400 1.5rem/1 var(--display); color: var(--tang); }
+.box-foot .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+.ghost { position: fixed; z-index: 60; width: 84px; pointer-events: none; translate: -50% -50%; filter: drop-shadow(0 12px 10px rgba(0,0,0,.3)); }
+.reel-cursor { position: fixed; z-index: 80; left: -5px; top: -3px; width: 34px; pointer-events: none; filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); }
+canvas.confetti { position: fixed; inset: 0; z-index: 70; pointer-events: none; width: 100%; height: 100%; }
+
+/* ---------- toolkit band ---------- */
+.stack { color: #fff; background: radial-gradient(120% 90% at 50% 0%, #6b4130 0%, var(--cocoa) 55%, #2e1b12 100%); overflow: hidden; padding: clamp(80px, 12vw, 150px) 0 clamp(56px, 8vw, 96px); }
+.big { margin: 0; font: 400 clamp(4rem, 15vw, 13rem)/.85 var(--display); letter-spacing: -.02em; text-align: center; color: var(--cream); }
+.bigsub { text-align: center; margin: .6em 0 0; font: 500 1.1rem/1.3 var(--thai); }
+.kits { margin: clamp(40px, 6vw, 72px) auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.kit { background: var(--cream); color: var(--ink); border-radius: 22px; padding: 20px 22px; }
+.kit h3 { margin: 0 0 10px; font: 700 1.2rem/1.3 var(--thai); display: flex; align-items: center; gap: 10px; }
+.kit h3 svg { width: 40px; height: 40px; }
+.kit .chips span { border: 0; background: var(--oat-deep); color: var(--ink); font-weight: 500; }
+.stack .sticker { width: clamp(50px, 6vw, 86px); }
+.stack .k1 { left: 6%; top: 10%; }
+.stack .k2 { right: 7%; top: 16%; left: auto; }
+
+/* ---------- contact ---------- */
+.contact { overflow: hidden; text-align: center; padding-bottom: clamp(90px, 12vw, 150px); }
+.contact .shout { margin: 0; font: 400 clamp(3.6rem, 13vw, 11rem)/.86 var(--display); color: var(--tang); letter-spacing: -.02em; }
+.shout-wrap { position: relative; display: inline-block; }
+.contact .me { position: absolute; z-index: 2; right: clamp(-150px, -11vw, -60px); bottom: -14%; width: clamp(100px, 13vw, 170px); }
+.contact .me img { width: 100%; height: auto; rotate: 8deg; filter: drop-shadow(0 18px 18px rgba(18,18,18,.3)); animation: bob 3.8s ease-in-out infinite alternate; }
+.contact p.lede { margin: 18px auto 0; text-wrap: balance; }
+.cta-row { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+footer { background: var(--ink); color: #cfc8bb; padding: 36px 0 44px; font-size: .92rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 16px 32px; justify-content: space-between; align-items: center; }
+footer a { color: var(--tang); }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips span { border: 1px solid #3a3631; border-radius: 999px; padding: .35em .9em; font: 400 .85rem/1.2 var(--thai); color: #e9e2d4; }
+.toast { position: fixed; left: 50%; bottom: 28px; z-index: 80; translate: -50% 0; background: var(--ink); color: #fff; padding: 14px 20px; border-radius: 16px; max-width: min(92vw, 460px); box-shadow: 0 14px 30px rgba(0,0,0,.3); font-size: .95rem; opacity: 0; transform: translateY(12px); transition: opacity .25s, transform .3s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+.toast.show { opacity: 1; transform: none; }
+
+@media (max-width: 900px) {
+  .top { flex-wrap: wrap; }
+  .pill-nav { order: 3; width: 100%; overflow-x: auto; scrollbar-width: none; justify-content: flex-start; }
+  .pill-nav::-webkit-scrollbar { display: none; }
+  .pill-nav a { font-size: .88rem; padding: .4em .85em; }
+  .game { grid-template-columns: 1fr; }
+  .kits { grid-template-columns: 1fr; }
+  .about .card { min-height: 660px; display: flex; align-items: flex-end; }
+  .badge-round { top: 18px; bottom: auto; width: 100px; height: 100px; }
+}
+@media (max-width: 560px) {
+  .logo { width: 52px; height: 52px; font-size: .8rem; }
+  .capsule { width: 48vw; }
+  .hero-bar { left: 14px; right: 14px; translate: none; }
+  .hero-bar .btn { flex: 1; padding: 0 .8em; }
+  .stage { padding-top: 60px; }
+  .tray { gap: 8px; }
+  .feat b { font-size: .8rem; }
+  .count small { text-align: left; }
+  .contact .me { right: -6px; bottom: auto; top: -62%; width: 76px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero { height: auto; }
+  .stage { position: relative; height: auto; min-height: 100svh; padding: 110px 0 140px; }
+  .welcome { opacity: 1; position: relative; left: auto; top: auto; translate: none; margin: 24px auto 0; }
+  .sticker use, .shots .row, .contact .me img { animation: none; }
+}
+</style>
 </head>
 <body>
 
-<!-- ============ SIDEBAR ============ -->
-<aside class="sidebar">
-  <div class="sidebar-top">
-    <div class="logo">
-      <div class="logo-circle">A</div>
-      <div class="logo-text">Atomify</div>
-    </div>
-    <ul class="nav-list">
-      <li class="nav-item active">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.5 3.247a1 1 0 0 0-1 0L4 7.577V20h4.5v-6a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v6H20V7.577l-7.5-4.33zm-2-1.732a3 3 0 0 1 3 0l7.5 4.33a2 2 0 0 1 1 1.732V21a1 1 0 0 1-1 1h-6.5a1 1 0 0 1-1-1v-6h-3v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.577a2 2 0 0 1 1-1.732l7.5-4.33z"/></svg>
-        <span data-i18n="nav_home">Home</span>
-      </li>
-      <li class="nav-item">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.533 1.279c-5.18 0-9.407 4.14-9.407 9.279s4.226 9.279 9.407 9.279c2.234 0 4.29-.77 5.907-2.058l4.353 4.353a1 1 0 1 0 1.414-1.414l-4.344-4.344a9.157 9.157 0 0 0 2.077-5.816c0-5.14-4.226-9.28-9.407-9.28zm-7.407 9.279c0-4.006 3.302-7.28 7.407-7.28s7.407 3.274 7.407 7.28-3.302 7.279-7.407 7.279-7.407-3.273-7.407-7.28z"/></svg>
-        <span data-i18n="nav_search">Search</span>
-      </li>
-    </ul>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="lg-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="2" seed="7" result="noise"/>
+    <feGaussianBlur in="noise" stdDeviation="2" result="soft"/>
+    <feDisplacementMap in="SourceGraphic" in2="soft" scale="26" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</svg>
+
+<header class="top">
+  <a class="logo" href="#top" aria-label="Atom">ATOM</a>
+  <nav class="pill-nav" aria-label="Sections">
+    <a href="#top" class="on" data-i18n="n0">หน้าแรก</a>
+    <a href="#about" data-i18n="n1">ตัวตน</a>
+    <a href="#works" data-i18n="n2">ผลงาน</a>
+    <a href="#build" data-i18n="n3">จัดเว็บ</a>
+    <a href="#contact" data-i18n="n4">ติดต่อ</a>
+  </nav>
+  <div class="langs" role="group" aria-label="Language">
+    <button type="button" data-lang="th" aria-pressed="true">ไทย</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    <button type="button" data-lang="zh" aria-pressed="false">中文</button>
   </div>
+</header>
 
-  <div class="sidebar-library">
-    <div class="library-header">
-      <div class="library-title">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1.5.866l7-4.04 1-.535A2 2 0 0 0 24.5 15.5v-7a2 2 0 0 0-1-1.79l-8-4.576zM8 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"/></svg>
-        <span data-i18n="your_library">Your Library</span>
-      </div>
-      <div class="library-plus" title="Create">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"/></svg>
-      </div>
-    </div>
-    <div class="library-chips">
-      <button class="chip" data-i18n="chip_playlists">Playlists</button>
-      <button class="chip" data-i18n="chip_projects">Projects</button>
-    </div>
-    <div class="library-items">
-      <div class="lib-item">
-        <div class="lib-cover cover-2">A</div>
-        <div class="lib-info">
-          <span class="lib-name">Atom — Phatthana</span>
-          <span class="lib-sub" data-i18n="lib_profile">Profile</span>
-        </div>
-      </div>
-      <div class="lib-item">
-        <div class="lib-cover cover-1">FA</div>
-        <div class="lib-info">
-          <span class="lib-name">Flutter Application</span>
-          <span class="lib-sub" data-i18n="lib_mobile">Project · Mobile</span>
-        </div>
-      </div>
-      <div class="lib-item">
-        <div class="lib-cover cover-3">AI</div>
-        <div class="lib-info">
-          <span class="lib-name">AI Chat Bot</span>
-          <span class="lib-sub" data-i18n="lib_ml">Project · ML</span>
-        </div>
-      </div>
-      <div class="lib-item">
-        <div class="lib-cover cover-4">VT</div>
-        <div class="lib-info">
-          <span class="lib-name">Visual Try-On Web</span>
-          <span class="lib-sub" data-i18n="lib_aiweb">Project · AI / Web</span>
-        </div>
-      </div>
-      <div class="lib-item">
-        <div class="lib-cover cover-5">⚙</div>
-        <div class="lib-info">
-          <span class="lib-name" data-i18n="lib_interests_name">Tech & Cars & Travel</span>
-          <span class="lib-sub" data-i18n="lib_interests_sub">Playlist · Interests</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</aside>
-
-<!-- ============ MAIN ============ -->
-<main class="main" id="main">
-  <div class="topbar" id="topbar">
-    <div class="nav-arrows">
-      <button class="arrow" aria-label="back">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M11.03.47a.75.75 0 0 1 0 1.06L4.56 8l6.47 6.47a.75.75 0 1 1-1.06 1.06L2.44 8 9.97.47a.75.75 0 0 1 1.06 0z"/></svg>
-      </button>
-      <button class="arrow" aria-label="forward">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.97.47a.75.75 0 0 0 0 1.06L11.44 8l-6.47 6.47a.75.75 0 0 0 1.06 1.06L13.56 8 6.03.47a.75.75 0 0 0-1.06 0z"/></svg>
-      </button>
-    </div>
-    <div class="topbar-right">
-      <div class="lang-switcher" role="group" aria-label="Language switcher">
-        <button class="lang-btn active" data-lang="th" type="button">TH</button>
-        <button class="lang-btn" data-lang="en" type="button">EN</button>
-        <button class="lang-btn" data-lang="zh" type="button">中文</button>
-      </div>
-      <div class="profile-circle">PP</div>
-    </div>
-  </div>
-
-  <!-- HERO -->
-  <section class="hero fade-in d1">
-    <div class="hero-cover"><img src="images/profile.jpg" alt="Atom"></div>
-    <div class="hero-info">
-      <div class="hero-meta" style="margin-bottom: 6px;">
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="#1ed760"><path d="M7 0a7 7 0 1 1 0 14A7 7 0 0 1 7 0zm3.847 4.282a.95.95 0 0 0-1.34 0L5.66 8.128 4.493 6.962a.95.95 0 1 0-1.343 1.343L4.99 10.14a.95.95 0 0 0 1.342 0l4.515-4.515a.95.95 0 0 0 0-1.343z"/></svg>
-        <span style="color: white; font-weight: 500;" data-i18n="verified">Verified Profile</span>
-      </div>
-      <span class="hero-type" data-i18n="profile">Profile</span>
-      <h1 class="hero-name">Atom<br/><span class="accent">phatthana pomthong</span></h1>
-      <div class="hero-meta">
-        <strong>atomify.dev</strong>
-        <span class="dot">•</span>
-        <span><strong>3</strong> <span data-i18n="projects_count">projects</span></span>
-        <span class="dot">•</span>
-        <span><strong>6</strong> <span data-i18n="skills_count">skills</span></span>
-        <span class="dot">•</span>
-        <span data-i18n="role">Full-Stack Developer</span>
+<main id="top">
+  <section class="hero" style="padding:0">
+    <div class="stage" id="stage">
+      <div class="words" aria-hidden="true"><span class="w1">HI!</span><span class="w2">I'M</span><span class="w3">ATOM</span></div>
+      <div class="capsule" id="capsule"><img src="images/profile-capsule.jpg" alt="Atom" width="720" height="1280"></div>
+      <svg class="sticker s1" viewBox="0 0 100 100" aria-hidden="true"><use href="#code"/></svg>
+      <svg class="sticker s2" viewBox="0 0 100 100" aria-hidden="true"><use href="#spark"/></svg>
+      <svg class="sticker s3" viewBox="0 0 100 100" aria-hidden="true"><use href="#car"/></svg>
+      <svg class="sticker s4" viewBox="0 0 100 100" aria-hidden="true"><use href="#thermo"/></svg>
+      <div class="welcome" id="welcome"><h1 data-i18n-html="welcome">นักพัฒนา <b>Full-Stack</b> ที่ทำเว็บ แอป และเกม ให้ใช้งานได้จริง ทุกชิ้นออนไลน์อยู่ กดเข้าไปลองได้เลย</h1></div>
+      <div class="hero-bar">
+        <a class="btn btn-soft" href="#works" data-i18n="ctaWorks">ดูผลงาน</a>
+        <a class="btn btn-ink" href="#contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg><span data-i18n="ctaHire">จ้างงาน</span></a>
       </div>
     </div>
   </section>
 
-  <!-- CONTROLS -->
-  <div class="controls fade-in d2">
-    <button class="play-btn" title="Play">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"/></svg>
-    </button>
-    <button class="icon-btn" title="Follow">
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4a4 4 0 014 4 4 4 0 11-8 0 4 4 0 014-4zm0 14a8 8 0 018-8h-1a7 7 0 00-7 7v1a7 7 0 00-7-7H4a8 8 0 018 8z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="8" r="3.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 20c0-3.866 3.134-7 7-7s7 3.134 7 7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
-    </button>
-    <button class="icon-btn" title="More">
-      <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor"><path d="M3 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm6.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM14.5 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
-    </button>
-  </div>
-
-  <!-- ABOUT (popular tracks) -->
-  <section class="section fade-in d3">
-    <div class="section-head">
-      <h2 class="section-title" data-i18n="popular_title">Popular</h2>
-    </div>
-    <div class="tracks">
-      <div class="track">
-        <div>
-          <span class="track-num">1</span>
-          <span class="track-play">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-          </span>
+  <section class="about" id="about" style="padding-top:clamp(24px,4vw,48px)">
+    <div class="wrap">
+      <div class="card" id="aboutCard">
+        <div class="shots" aria-hidden="true">
+          <div class="row"></div>
+          <div class="row r2"></div>
         </div>
-        <div class="track-main">
-          <div class="track-cover cover-1">💻</div>
-          <span class="track-title" data-i18n="track1_title">Built for Technology</span>
+        <div class="panel">
+          <h2>Who's Atom?</h2>
+          <p data-i18n="aboutP">ผม Atom นักพัฒนา Full-Stack ชอบสร้างของที่คนใช้ได้จริง ตั้งแต่เว็บร้านค้าไปจนถึงแอปบน Mac และเกมบนเว็บ นอกเวลางานชอบรถยนต์กับการเดินทาง</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span data-i18n="a1">เว็บไซต์ 3 ภาษา พร้อมแอนิเมชันตอนเลื่อน</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span data-i18n="a2">แอป macOS ด้วย Swift แจกฟรีบน GitHub</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span data-i18n="a3">เกม 3D เล่นบนเว็บด้วย Three.js</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/></svg><span data-i18n="a4">ระบบ AI ที่ทำงานเองอัตโนมัติทุกวัน</span></li>
+          </ul>
         </div>
-        <span class="track-plays" data-i18n="track1_desc">หลงใหลในเทคโนโลยี และการสร้างสิ่งใหม่</span>
-        <span class="track-time">∞</span>
-      </div>
-      <div class="track">
-        <div>
-          <span class="track-num">2</span>
-          <span class="track-play">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-          </span>
-        </div>
-        <div class="track-main">
-          <div class="track-cover cover-3">🏎️</div>
-          <span class="track-title" data-i18n="track2_title">Engine & Asphalt</span>
-        </div>
-        <span class="track-plays" data-i18n="track2_desc">รถยนต์ — เครื่องยนต์ ดีไซน์ และความเร็ว</span>
-        <span class="track-time">∞</span>
-      </div>
-      <div class="track">
-        <div>
-          <span class="track-num">3</span>
-          <span class="track-play">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-          </span>
-        </div>
-        <div class="track-main">
-          <div class="track-cover cover-2">🌏</div>
-          <span class="track-title" data-i18n="track3_title">Wanderlust</span>
-        </div>
-        <span class="track-plays" data-i18n="track3_desc">ท่องเที่ยว เก็บประสบการณ์ใหม่ๆ จากทุกที่</span>
-        <span class="track-time">∞</span>
-      </div>
-      <div class="track">
-        <div>
-          <span class="track-num">4</span>
-          <span class="track-play">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-          </span>
-        </div>
-        <div class="track-main">
-          <div class="track-cover cover-4">⚡</div>
-          <span class="track-title" data-i18n="track4_title">Full-Stack Mindset</span>
-        </div>
-        <span class="track-plays" data-i18n="track4_desc">ออกแบบและสร้างได้ตั้งแต่ frontend จนถึง backend</span>
-        <span class="track-time">∞</span>
+        <svg class="badge-round" viewBox="0 0 120 120" aria-hidden="true" id="badge">
+          <defs><path id="circ" d="M60 60 m-44 0 a44 44 0 1 1 88 0 a44 44 0 1 1 -88 0"/></defs>
+          <circle cx="60" cy="60" r="58" fill="#ec4d0e" stroke="#121212" stroke-width="3"/>
+          <text font-family="Bowlby One, sans-serif" font-size="12" fill="#fffdf8" letter-spacing="2.4"><textPath href="#circ">WEB · APP · GAME · AI · CODE ·</textPath></text>
+          <use href="#spark" x="34" y="34" width="52" height="52"/>
+        </svg>
       </div>
     </div>
   </section>
 
-  <!-- PROJECTS -->
-  <section class="section fade-in d4">
-    <div class="section-head">
-      <h2 class="section-title" data-i18n="projects_title">Projects</h2>
-      <a class="show-all" data-i18n="show_all">Show all</a>
+  <section class="works" id="works" style="padding-bottom:clamp(40px,6vw,80px)">
+    <div class="wrap head">
+      <div>
+        <h2 class="title"><span data-i18n="wkTitle">ผลงาน</span> <span class="en">WORKS</span></h2>
+        <p class="lede" data-i18n="wkLede">ทุกชิ้นออนไลน์อยู่จริง กดการ์ดเพื่อเปิดดูได้เลย</p>
+      </div>
+      <div class="count"><span id="nWorks">8</span><small data-i18n="wkCount">ชิ้นที่ใช้งานได้</small></div>
     </div>
-    <div class="card-grid">
-      <div class="card">
-        <div class="card-cover" style="background: linear-gradient(135deg, #02569B 0%, #54C5F8 100%);">
-          Flutter App
+    <div class="rail" id="rail"></div>
+  </section>
+
+  <section class="build" id="build">
+    <div class="wrap">
+      <h2 class="title"><span data-i18n="bdTitle">อยากได้เว็บแบบไหน?</span> <span class="en">BUILD IT!</span></h2>
+      <p class="lede" data-i18n="bdLede">ลากสิ่งที่อยากได้ลงกล่อง หรือแตะเพื่อใส่ แล้วกดส่งสเปกมาคุยกันได้เลย แตะของในกล่องเพื่อเอาออก</p>
+      <div class="game">
+        <div class="tray" id="tray"></div>
+        <div class="boxwrap">
+          <div class="box" id="boxEl">
+            <span class="lid">YOUR WEBSITE</span>
+            <div class="slots" id="slots"></div>
+            <div class="box-foot">
+              <span class="sum" id="sum"></span>
+              <a class="btn btn-ink" id="sendSpec" href="#" aria-disabled="true" data-i18n="send">ส่งสเปกนี้ให้ Atom</a>
+            </div>
+          </div>
         </div>
-        <button class="card-play">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-        </button>
-        <div class="card-title">Flutter Application</div>
-        <div class="card-sub" data-i18n="project1_desc">Cross-platform mobile app built with Flutter & Dart</div>
-      </div>
-      <div class="card">
-        <div class="card-cover" style="background: linear-gradient(135deg, #10A37F 0%, #1a1a2e 100%);">
-          AI Chat
-        </div>
-        <button class="card-play">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-        </button>
-        <div class="card-title">AI Chat Bot</div>
-        <div class="card-sub" data-i18n="project2_desc">Intelligent conversation bot powered by ML & NLP</div>
-      </div>
-      <div class="card">
-        <div class="card-cover" style="background: linear-gradient(135deg, #f037a5 0%, #7d2b8b 100%);">
-          Visual Try-On
-        </div>
-        <button class="card-play">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M7.05 3.606l13.49 7.788a.7.7 0 010 1.212L7.05 20.394A.7.7 0 016 19.788V4.212a.7.7 0 011.05-.606z"/></svg>
-        </button>
-        <div class="card-title">Visual Try-On Web</div>
-        <div class="card-sub" data-i18n="project3_desc">Web app for trying on items virtually using computer vision</div>
       </div>
     </div>
   </section>
 
-  <!-- SKILLS -->
-  <section class="section fade-in d5">
-    <div class="section-head">
-      <h2 class="section-title" data-i18n="skills_title">Skills & Tech Stack</h2>
-    </div>
-    <div class="skill-grid">
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #61DAFB 0%, #1e3a5f 100%);">
-        <span class="skill-name">React</span>
-        <div class="skill-mini-cover">R</div>
-      </div>
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #000000 0%, #434343 100%);">
-        <span class="skill-name">Next.js</span>
-        <div class="skill-mini-cover">N</div>
-      </div>
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #02569B 0%, #54C5F8 100%);">
-        <span class="skill-name">Flutter</span>
-        <div class="skill-mini-cover">F</div>
-      </div>
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #339933 0%, #1a3a1a 100%);">
-        <span class="skill-name">Node.js</span>
-        <div class="skill-mini-cover">N</div>
-      </div>
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #3776AB 0%, #FFD43B 100%);">
-        <span class="skill-name">Python</span>
-        <div class="skill-mini-cover">P</div>
-      </div>
-      <div class="skill-card" style="--skill-gradient: linear-gradient(135deg, #E34F26 0%, #264de4 100%);">
-        <span class="skill-name">HTML / CSS</span>
-        <div class="skill-mini-cover">H</div>
-      </div>
+  <section class="stack" id="stack">
+    <svg class="sticker k1" viewBox="0 0 100 100" aria-hidden="true"><use href="#bolt"/></svg>
+    <svg class="sticker k2" viewBox="0 0 100 100" aria-hidden="true"><use href="#pad"/></svg>
+    <div class="wrap">
+      <p class="big">TOOLKIT</p>
+      <p class="bigsub" data-i18n="stSub">เครื่องมือที่ใช้ทำงานจริงทุกวัน</p>
+      <div class="kits" id="kits"></div>
     </div>
   </section>
 
-  <!-- CONTACT -->
-  <section class="section fade-in d5">
-    <div class="section-head">
-      <h2 class="section-title" data-i18n="connect_title">Let's Connect</h2>
-    </div>
-    <div class="contact-card">
-      <div style="position: relative; z-index: 1;">
-        <div class="contact-label" data-i18n="get_in_touch">Get in touch</div>
-        <h3 class="contact-title"><span data-i18n="build_together_1">Build something</span> <span class="accent" data-i18n="build_together_2">together</span></h3>
-        <a class="contact-email" href="mailto:phatthanapomthong@gmail.com">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          phatthanapomthong@gmail.com
-        </a>
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="shout-wrap"><p class="shout">LET'S<br>BUILD!</p><div class="me"><img src="images/atom-halftone.png" alt="" width="747" height="1052"></div></div>
+      <p class="lede" data-i18n="ctLede">รับงานผ่าน Fastwork ทั้งเว็บไซต์ แอป และระบบอัตโนมัติ คุยง่าย ส่งงานไว ทักมาได้เลย</p>
+      <div class="cta-row">
+        <a class="btn btn-ink" href="mailto:phatthanapomthong@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg><span data-i18n="ctMail">ส่งอีเมล</span></a>
+        <a class="btn btn-soft" href="https://fastwork-portfolio.phatthanapomthong.workers.dev" target="_blank" rel="noopener" data-i18n="ctDemos">ดูเว็บตัวอย่างทั้งหมด</a>
+        <a class="btn btn-soft" href="https://github.com/Atomphat" target="_blank" rel="noopener">GitHub</a>
       </div>
-      <a href="mailto:phatthanapomthong@gmail.com" style="text-decoration: none;">
-        <button class="contact-btn" data-i18n="send_message">Send Message</button>
-      </a>
     </div>
-    <p style="text-align: center; color: var(--text-tertiary); font-size: 13px; margin-top: 32px;">
-      © 2026 Phatthana Pomthong (Atom) · <span data-i18n="made_with">Made with</span> <span style="color: var(--green-bright);">♥</span> & code
-    </p>
   </section>
-
-  <div style="height: 24px;"></div>
 </main>
 
-<!-- ============ PLAYER ============ -->
-<footer class="player">
-  <div class="now-playing">
-    <div class="now-cover">A</div>
-    <div class="now-info">
-      <div class="now-title" data-i18n="now_title">Hello, I'm Atom</div>
-      <div class="now-artist">Phatthana Pomthong</div>
-    </div>
-    <div class="now-icons">
-      <button class="player-btn" title="Save">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="#1ed760"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="player-center">
-    <div class="player-controls">
-      <button class="player-btn" title="Shuffle">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"/><path d="M7.5 10.723l.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"/></svg>
-      </button>
-      <button class="player-btn" title="Previous">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"/></svg>
-      </button>
-      <button class="player-play" title="Play">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3 1.713a.7.7 0 0 1 1.05-.607l10.89 6.288a.7.7 0 0 1 0 1.212L4.05 14.894A.7.7 0 0 1 3 14.288V1.713z"/></svg>
-      </button>
-      <button class="player-btn" title="Next">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"/></svg>
-      </button>
-      <button class="player-btn" title="Repeat">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"/></svg>
-      </button>
-    </div>
-    <div class="progress-row">
-      <span class="time">1:24</span>
-      <div class="progress-bar">
-        <div class="progress-fill">
-          <div class="progress-thumb"></div>
-        </div>
-      </div>
-      <span class="time">4:32</span>
-    </div>
-  </div>
-
-  <div class="player-right">
-    <button class="player-btn" title="Lyrics">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13.426 2.574a2.831 2.831 0 0 0-4.797 1.55l3.247 3.247a2.831 2.831 0 0 0 1.55-4.797zM10.5 8.118l-2.619-2.62A63303.13 63303.13 0 0 0 4.74 9.075L2.065 12.12a1.287 1.287 0 0 0 1.816 1.816l3.06-2.688 3.56-3.129zM7.12 4.094a4.331 4.331 0 1 1 4.786 4.786l-3.974 3.493-3.06 2.689a2.787 2.787 0 0 1-3.933-3.933l2.676-3.045 3.505-3.99z"/></svg>
-    </button>
-    <button class="player-btn" title="Queue">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M15 15H1v-1.5h14V15zm0-4.5H1V9h14v1.5zm-14-7A2.5 2.5 0 0 1 3.5 1h9a2.5 2.5 0 0 1 0 5h-9A2.5 2.5 0 0 1 1 3.5zm2.5-1a1 1 0 0 0 0 2h9a1 1 0 1 0 0-2h-9z"/></svg>
-    </button>
-    <button class="player-btn" title="Devices">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 2.75C6 1.784 6.784 1 7.75 1h6.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 14.25 15h-6.5A1.75 1.75 0 0 1 6 13.25V2.75zm1.75-.25a.25.25 0 0 0-.25.25v10.5c0 .138.112.25.25.25h6.5a.25.25 0 0 0 .25-.25V2.75a.25.25 0 0 0-.25-.25h-6.5zm-6 0a.25.25 0 0 0-.25.25v6.5c0 .138.112.25.25.25H4V11H1.75A1.75 1.75 0 0 1 0 9.25v-6.5C0 1.784.784 1 1.75 1H4v1.5H1.75zM4 15v-1.5h1.5V15H4z"/></svg>
-    </button>
-    <button class="player-btn" title="Volume">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M9.741.85a.75.75 0 0 1 .375.65v13a.75.75 0 0 1-1.125.65l-6.925-4a3.642 3.642 0 0 1-1.33-4.973A3.639 3.639 0 0 1 2.066 4.85l6.925-4a.75.75 0 0 1 .75 0zm-6.924 5.3a2.139 2.139 0 0 0 0 3.7l5.8 3.35V2.8l-5.8 3.35zm8.683 4.29V5.56a2.75 2.75 0 0 1 0 4.88z"/></svg>
-    </button>
-    <div class="volume-bar"><div class="volume-fill"></div></div>
-    <button class="player-btn" title="Expand">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.53 9.47a.75.75 0 0 1 0 1.06l-2.72 2.72h1.018a.75.75 0 0 1 0 1.5H1.25v-3.578a.75.75 0 0 1 1.5 0v1.018l2.72-2.72a.75.75 0 0 1 1.06 0zm2.94-2.94a.75.75 0 0 1 0-1.06l2.72-2.72h-1.018a.75.75 0 1 1 0-1.5h3.578V4.83a.75.75 0 0 1-1.5 0V3.81l-2.72 2.72a.75.75 0 0 1-1.06 0z"/></svg>
-    </button>
+<footer>
+  <div class="wrap">
+    <div class="chips"><span data-i18n="f1">เว็บไซต์</span><span data-i18n="f2">แอป Mac</span><span data-i18n="f3">เกมบนเว็บ</span><span data-i18n="f4">ระบบ AI</span></div>
+    <span>© 2026 Atom · Atomify</span>
+    <a href="_spotify-v1/" data-i18n="fOld">เวอร์ชันเก่า</a>
   </div>
 </footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="js/translations.js"></script>
-<script src="js/main.js"></script>
+<!-- authored sticker set: thick ink outlines, flat fills -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="code" viewBox="0 0 100 100"><rect x="8" y="18" width="84" height="64" rx="16" fill="#fffdf8" stroke="#121212" stroke-width="4.5"/><path d="M36 36 L22 50 L36 64 M64 36 L78 50 L64 64" fill="none" stroke="#ec4d0e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 32 L45 68" stroke="#121212" stroke-width="5" stroke-linecap="round"/></symbol>
+    <symbol id="spark" viewBox="0 0 100 100"><path d="M50 6 L58 38 L92 30 L64 50 L92 70 L58 62 L50 94 L42 62 L8 70 L36 50 L8 30 L42 38 Z" fill="#f0a24b" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/><circle cx="50" cy="50" r="7" fill="#fffdf8" stroke="#121212" stroke-width="3"/></symbol>
+    <symbol id="car" viewBox="0 0 100 100"><path d="M10 62 L14 48 Q16 42 24 41 L32 40 L42 28 Q45 25 50 25 L68 25 Q73 25 76 29 L84 40 Q92 42 92 50 L92 62 Q92 66 88 66 L14 66 Q10 66 10 62 Z" fill="#ec4d0e" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/><path d="M38 40 L46 31 L58 31 L58 40 Z M64 31 L72 31 L78 40 L64 40 Z" fill="#cfe6f2" stroke="#121212" stroke-width="3" stroke-linejoin="round"/><circle cx="30" cy="66" r="10" fill="#121212"/><circle cx="30" cy="66" r="4" fill="#fffdf8"/><circle cx="74" cy="66" r="10" fill="#121212"/><circle cx="74" cy="66" r="4" fill="#fffdf8"/></symbol>
+    <symbol id="thermo" viewBox="0 0 100 100"><path d="M40 16 Q40 6 50 6 Q60 6 60 16 L60 58 Q72 65 72 78 Q72 94 50 94 Q28 94 28 78 Q28 65 40 58 Z" fill="#fffdf8" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/><path d="M50 30 L50 70" stroke="#ec4d0e" stroke-width="9" stroke-linecap="round"/><circle cx="50" cy="78" r="11" fill="#ec4d0e" stroke="#121212" stroke-width="3"/><path d="M62 24 H68 M62 36 H68 M62 48 H68" stroke="#121212" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="globe" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#cfe6f2" stroke="#121212" stroke-width="4.5"/><path d="M10 50 H90 M50 10 Q28 50 50 90 M50 10 Q72 50 50 90 M18 30 H82 M18 70 H82" fill="none" stroke="#121212" stroke-width="3"/></symbol>
+    <symbol id="bolt" viewBox="0 0 100 100"><path d="M58 6 L20 56 L46 56 L38 94 L80 40 L54 40 Z" fill="#ffd23f" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/></symbol>
+    <symbol id="cal" viewBox="0 0 100 100"><rect x="12" y="18" width="76" height="70" rx="14" fill="#fffdf8" stroke="#121212" stroke-width="4.5"/><path d="M12 40 H88" stroke="#121212" stroke-width="4"/><path d="M12 32 Q12 18 26 18 H74 Q88 18 88 32 V40 H12 Z" fill="#ec4d0e" stroke="#121212" stroke-width="4" stroke-linejoin="round"/><path d="M32 10 V26 M68 10 V26" stroke="#121212" stroke-width="5" stroke-linecap="round"/><path d="M36 64 L46 73 L66 52" fill="none" stroke="#3e8e4f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="chat" viewBox="0 0 100 100"><path d="M14 26 Q14 14 26 14 H74 Q86 14 86 26 V58 Q86 70 74 70 H44 L26 86 L28 70 H26 Q14 70 14 58 Z" fill="#3e8e4f" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/><circle cx="34" cy="42" r="5" fill="#fffdf8"/><circle cx="50" cy="42" r="5" fill="#fffdf8"/><circle cx="66" cy="42" r="5" fill="#fffdf8"/></symbol>
+    <symbol id="phone" viewBox="0 0 100 100"><rect x="28" y="6" width="44" height="88" rx="12" fill="#121212" stroke="#121212" stroke-width="4.5"/><rect x="33" y="16" width="34" height="64" rx="5" fill="#ffd7c2"/><path d="M38 30 H62 M38 42 H56" stroke="#ec4d0e" stroke-width="5" stroke-linecap="round"/><rect x="38" y="54" width="24" height="16" rx="4" fill="#fffdf8"/><path d="M44 86 H56" stroke="#fffdf8" stroke-width="3" stroke-linecap="round"/></symbol>
+    <symbol id="pad" viewBox="0 0 100 100"><path d="M28 30 H72 Q92 30 94 56 Q96 80 82 80 Q74 80 68 70 H32 Q26 80 18 80 Q4 80 6 56 Q8 30 28 30 Z" fill="#b9a7f0" stroke="#121212" stroke-width="4.5" stroke-linejoin="round"/><path d="M26 46 V62 M18 54 H34" stroke="#121212" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="48" r="5" fill="#ec4d0e" stroke="#121212" stroke-width="2.5"/><circle cx="78" cy="58" r="5" fill="#3e8e4f" stroke="#121212" stroke-width="2.5"/></symbol>
+    <symbol id="gear" viewBox="0 0 100 100"><path d="M44 6 H56 L58 18 L68 22 L78 14 L86 22 L78 32 L82 42 L94 44 V56 L82 58 L78 68 L86 78 L78 86 L68 78 L58 82 L56 94 H44 L42 82 L32 78 L22 86 L14 78 L22 68 L18 58 L6 56 V44 L18 42 L22 32 L14 22 L22 14 L32 22 L42 18 Z" fill="#e8dfcc" stroke="#121212" stroke-width="4" stroke-linejoin="round"/><circle cx="50" cy="50" r="14" fill="#ec4d0e" stroke="#121212" stroke-width="4"/></symbol>
+  </defs>
+</svg>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+// liquid glass: SVG refraction behind the glass only renders in Chromium; elsewhere it stays frosted
+if (navigator.userAgentData?.brands?.some(b => /Chromium/.test(b.brand))) document.documentElement.classList.add("lg-refract");
+const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const springs = new WeakMap();
+let hovered = null;
+// buttons lean toward the mouse, stretch a little, and wobble back like jelly when it leaves
+function spring(el) {
+  if (!springs.has(el)) {
+    const p = { x: 0, y: 0, sx: 1, sy: 1 };
+    const apply = () => { el.style.translate = `${p.x}px ${p.y}px`; el.style.scale = `${p.sx} ${p.sy}`; };
+    springs.set(el, { p, apply, to: v => gsap.to(p, { ...v, duration: .45, ease: "power3.out", overwrite: "auto", onUpdate: apply }) });
+  }
+  return springs.get(el);
+}
+function release(el) {
+  const s = springs.get(el);
+  if (s) gsap.to(s.p, { x: 0, y: 0, sx: 1, sy: 1, duration: .9, ease: "elastic.out(1, .35)", overwrite: "auto", onUpdate: s.apply });
+}
+document.addEventListener("pointermove", e => {
+  const el = e.target.closest?.(".btn, .feat");
+  if (hovered && hovered !== el) release(hovered);
+  hovered = el;
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const u = (e.clientX - r.left) / r.width, v = (e.clientY - r.top) / r.height;
+  el.style.setProperty("--mx", (u * 100).toFixed(1) + "%");
+  el.style.setProperty("--my", (v * 100).toFixed(1) + "%");
+  if (calm || e.pointerType !== "mouse" || el.hasPointerCapture?.(e.pointerId)) return;
+  const dx = u - .5, dy = v - .5;
+  spring(el).to({ x: dx * Math.min(r.width * .16, 18), y: dy * Math.min(r.height * .3, 12), sx: 1 + Math.abs(dx) * .07, sy: 1 + Math.abs(dy) * .1 - Math.abs(dx) * .03 });
+}, { passive: true });
+document.addEventListener("pointerleave", () => { if (hovered) release(hovered); hovered = null; });
+
+function glassThumb(group, isActive) {
+  const items = () => [...group.children].filter(c => c.matches("a, button"));
+  const thumb = document.createElement("span");
+  thumb.className = "lg-thumb";
+  group.prepend(thumb);
+  group.classList.add("has-thumb");
+  let lit = null, inside = false;
+  const go = (el, instant) => {
+    if (!el) return;
+    if (lit !== el) { lit?.removeAttribute("data-lit"); el.setAttribute("data-lit", ""); }
+    const from = gsap.getProperty(thumb, "x"), box = { x: el.offsetLeft, y: el.offsetTop, width: el.offsetWidth, height: el.offsetHeight };
+    if (instant || calm || !lit) gsap.set(thumb, box);
+    else if (lit !== el) {
+      // squash while travelling, the farther it goes the more it squashes
+      gsap.to(thumb, { ...box, duration: .6, ease: "elastic.out(1, .65)", overwrite: "auto" });
+      gsap.fromTo(thumb, { scaleY: 1 - Math.min(Math.abs(box.x - from) / 500, .25), scaleX: 1 + Math.min(Math.abs(box.x - from) / 700, .12) }, { scaleY: 1, scaleX: 1, duration: .7, ease: "elastic.out(1.1, .45)" });
+    }
+    lit = el;
+  };
+  const home = () => { if (!inside) go(items().find(isActive)); };
+  group.addEventListener("pointerover", e => { const el = e.target.closest("a, button"); if (el && e.pointerType === "mouse") { inside = true; go(el); } });
+  group.addEventListener("pointerleave", () => { inside = false; home(); });
+  group.addEventListener("focusin", e => go(e.target));
+  group.addEventListener("focusout", home);
+  new MutationObserver(home).observe(group, { subtree: true, attributes: true, attributeFilter: ["class", "aria-pressed"] });
+  new ResizeObserver(() => go(lit, true)).observe(group);
+  home();
+}
+glassThumb($(".pill-nav"), a => a.classList.contains("on"));
+glassThumb($(".langs"), b => b.getAttribute("aria-pressed") === "true");
+const REEL = new URLSearchParams(location.search).has("reel");
+// ?reel&loop: the short looping reel, just scrolling, no auto-played game and no cursor
+const LOOP = new URLSearchParams(location.search).has("loop");
+const MAIL = "phatthanapomthong@gmail.com";
+const DEMOS = "https://fastwork-portfolio.phatthanapomthong.workers.dev";
+
+const WORKS = [
+  { id: "gearwang", img: "gearwang.jpg", url: "https://www.gearwang.com", bg: "#4a2c1e", fg: "#fffdf8", st: "LIVE",
+    tag: { th: "เว็บข่าว AI", en: "AI news site", zh: "AI 新闻网站" }, n: { th: "เกียร์ว่าง", en: "Gearwang", zh: "Gearwang 汽车新闻" },
+    d: { th: "เว็บข่าวรถยนต์ภาษาไทย AI เขียนและลงข่าวให้เองทุกวัน", en: "Thai car news, written and published by AI every day", zh: "泰语汽车新闻，由 AI 每天自动撰写发布" } },
+  { id: "unpacking", img: "unpacking.jpg", url: "https://unpacking-game.phatthanapomthong.workers.dev", bg: "#ffd7c2", fg: "#121212", st: "PLAY",
+    tag: { th: "เกม 3D", en: "3D game", zh: "3D 游戏" }, n: { th: "เกมจัดห้อง", en: "Unpacking Room", zh: "整理房间" },
+    d: { th: "แกะกล่องจัดของเข้าห้องแบบสามมิติ เล่นบนเว็บได้เลย", en: "Unbox and arrange a 3D room, right in the browser", zh: "在浏览器里拆箱布置 3D 房间" } },
+  { id: "tempbar", img: "tempbar-menu.jpg", url: "https://github.com/Atomphat/tempbar", bg: "#2f7340", fg: "#fffdf8", st: "FREE",
+    tag: { th: "แอป Mac", en: "Mac app", zh: "Mac 应用" }, n: { th: "TempBar", en: "TempBar", zh: "TempBar" },
+    d: { th: "ดูอุณหภูมิ CPU และแรมบนแถบเมนูกับ Touch Bar", en: "CPU temperature and RAM in the menu bar and Touch Bar", zh: "在菜单栏和 Touch Bar 查看 CPU 温度与内存" } },
+  { id: "claudebar", img: "claudebar.png", bar: true, url: "https://github.com/Atomphat/claudebar", bg: "#e8dfcc", fg: "#121212", st: "FREE",
+    tag: { th: "แอป Mac", en: "Mac app", zh: "Mac 应用" }, n: { th: "ClaudeBar", en: "ClaudeBar", zh: "ClaudeBar" },
+    d: { th: "บอก % การใช้ Claude และเวลารีเซ็ตบนแถบเมนู", en: "Claude usage % and reset countdown in the menu bar", zh: "在菜单栏显示 Claude 用量与重置倒计时" } },
+  { id: "oat", img: "oat.jpg", url: DEMOS + "/oat/", bg: "#ff9a3c", fg: "#121212", st: "LIVE",
+    tag: { th: "เว็บตัวอย่าง", en: "Demo site", zh: "示范网站" }, n: { th: "OATOH! คาเฟ่", en: "OATOH! Café", zh: "OATOH! 咖啡馆" },
+    d: { th: "ตัวหนังสือลอยตามการเลื่อน และเกมจัดกล่องคุกกี้", en: "Scroll-played giant words and a cookie-box game", zh: "随滚动飞入的大字与饼干盒小游戏" } },
+  { id: "minte", img: "minte.jpg", url: DEMOS + "/minte/", bg: "#dcefe6", fg: "#121212", st: "LIVE",
+    tag: { th: "เว็บตัวอย่าง", en: "Demo site", zh: "示范网站" }, n: { th: "มินเต้ คลินิก", en: "Minte Clinic", zh: "Minte 诊所" },
+    d: { th: "เว็บคลินิกความงาม 3 ภาษา วิดีโอเต็มจอ", en: "Three-language beauty clinic site with full-bleed video", zh: "三语美容诊所网站，全屏视频" } },
+  { id: "river", img: "river.jpg", url: DEMOS + "/river/", bg: "#1f3b4d", fg: "#fffdf8", st: "LIVE",
+    tag: { th: "เว็บตัวอย่าง", en: "Demo site", zh: "示范网站" }, n: { th: "นที แคว", en: "Nathee Kwae", zh: "Nathee Kwae" },
+    d: { th: "เว็บที่พักริมน้ำระดับหรู เลื่อนแล้วภาพเปิดเป็นฉาก", en: "Luxury riverside residence, scenes open as you scroll", zh: "高端河畔住宅，滚动展开场景" } },
+  { id: "station", img: "station.jpg", url: DEMOS + "/station/", bg: "#fffdf8", fg: "#121212", st: "LIVE",
+    tag: { th: "เว็บตัวอย่าง", en: "Demo site", zh: "示范网站" }, n: { th: "สเตชั่น ลิฟวิ่ง", en: "Station Living", zh: "Station Living" },
+    d: { th: "ค้นหาคอนโดตามสถานีรถไฟฟ้า กรองได้ทันที", en: "Find condos by train station with instant filters", zh: "按轻轨站查找公寓，即时筛选" } },
+];
+const FEATS = [
+  { id: "lang", icon: "globe", n: { th: "เว็บ 3 ภาษา", en: "3 languages", zh: "三种语言" } },
+  { id: "motion", icon: "bolt", n: { th: "แอนิเมชันตอนเลื่อน", en: "Scroll animation", zh: "滚动动画" } },
+  { id: "mobile", icon: "phone", n: { th: "สวยบนมือถือ", en: "Mobile first", zh: "手机优先" } },
+  { id: "booking", icon: "cal", n: { th: "ระบบจองคิว", en: "Booking system", zh: "预约系统" } },
+  { id: "bot", icon: "chat", n: { th: "แชทบอท AI", en: "AI chatbot", zh: "AI 聊天机器人" } },
+  { id: "game", icon: "pad", n: { th: "เกมเล็กในเว็บ", en: "Mini game", zh: "网页小游戏" } },
+];
+const KITS = [
+  { icon: "globe", n: { th: "เว็บไซต์", en: "Websites", zh: "网站" }, t: ["Next.js", "React", "Three.js", "GSAP", "HTML / CSS"] },
+  { icon: "code", n: { th: "แอป", en: "Apps", zh: "应用" }, t: ["Swift", "Kotlin", "Flutter"] },
+  { icon: "gear", n: { th: "หลังบ้าน & AI", en: "Backend & AI", zh: "后端与 AI" }, t: ["Supabase", "Cloudflare", "Python", "Claude AI"] },
+];
+
+const T = {
+  th: { n0: "หน้าแรก", n1: "ตัวตน", n2: "ผลงาน", n3: "จัดเว็บ", n4: "ติดต่อ",
+    welcome: "นักพัฒนา <b>Full-Stack</b> ที่ทำเว็บ แอป และเกม ให้ใช้งานได้จริง ทุกชิ้นออนไลน์อยู่ กดเข้าไปลองได้เลย", ctaWorks: "ดูผลงาน", ctaHire: "จ้างงาน",
+    aboutP: "ผม Atom นักพัฒนา Full-Stack ชอบสร้างของที่คนใช้ได้จริง ตั้งแต่เว็บร้านค้าไปจนถึงแอปบน Mac และเกมบนเว็บ นอกเวลางานชอบรถยนต์กับการเดินทาง",
+    a1: "เว็บไซต์ 3 ภาษา พร้อมแอนิเมชันตอนเลื่อน", a2: "แอป macOS ด้วย Swift แจกฟรีบน GitHub", a3: "เกม 3D เล่นบนเว็บด้วย Three.js", a4: "ระบบ AI ที่ทำงานเองอัตโนมัติทุกวัน",
+    wkTitle: "ผลงาน", wkLede: "ทุกชิ้นออนไลน์อยู่จริง กดการ์ดเพื่อเปิดดูได้เลย", wkCount: "ชิ้นที่ใช้งานได้", open: "เปิดดู →",
+    bdTitle: "อยากได้เว็บแบบไหน?", bdLede: "ลากสิ่งที่อยากได้ลงกล่อง หรือแตะเพื่อใส่ แล้วกดส่งสเปกมาคุยกันได้เลย แตะของในกล่องเพื่อเอาออก",
+    empty: "วางตรงนี้", send: "ส่งสเปกนี้ให้ Atom", sum: n => `เลือกแล้ว <b>${n}</b>/4`, full: "กล่องเต็มแล้ว แตะของในกล่องเพื่อเอาออก",
+    mailSubj: "อยากได้เว็บไซต์", mailBody: l => `สวัสดีครับ Atom\n\nอยากได้เว็บที่มี:\n${l}\n\nรายละเอียดเพิ่มเติม:\n`,
+    stSub: "เครื่องมือที่ใช้ทำงานจริงทุกวัน",
+    ctLede: "รับงานผ่าน Fastwork ทั้งเว็บไซต์ แอป และระบบอัตโนมัติ คุยง่าย ส่งงานไว ทักมาได้เลย", ctMail: "ส่งอีเมล", ctDemos: "ดูเว็บตัวอย่างทั้งหมด",
+    f1: "เว็บไซต์", f2: "แอป Mac", f3: "เกมบนเว็บ", f4: "ระบบ AI", fOld: "เวอร์ชันเก่า" },
+  en: { n0: "Home", n1: "About", n2: "Works", n3: "Build", n4: "Contact",
+    welcome: "A <b>full-stack</b> developer who builds websites, apps and games people actually use. Everything is live, go try it.", ctaWorks: "See works", ctaHire: "Hire me",
+    aboutP: "I'm Atom, a full-stack developer who likes building things people really use, from shop websites to Mac apps and browser games. Off the clock I'm into cars and travel.",
+    a1: "Three-language websites with scroll animation", a2: "macOS apps in Swift, free on GitHub", a3: "3D browser games with Three.js", a4: "AI systems that run on their own every day",
+    wkTitle: "Selected", wkLede: "Every piece is live. Tap a card to open it.", wkCount: "working projects", open: "Open →",
+    bdTitle: "What site do you need?", bdLede: "Drag what you want into the box, or tap to add, then send me the spec. Tap an item in the box to take it out.",
+    empty: "Drop here", send: "Send this spec to Atom", sum: n => `Picked <b>${n}</b>/4`, full: "The box is full. Tap an item to take it out.",
+    mailSubj: "Website enquiry", mailBody: l => `Hi Atom,\n\nI'd like a website with:\n${l}\n\nMore details:\n`,
+    stSub: "The tools I use every day",
+    ctLede: "Hire me on Fastwork for websites, apps and automation. Easy to talk to, quick to ship.", ctMail: "Email me", ctDemos: "See all demo sites",
+    f1: "Websites", f2: "Mac apps", f3: "Web games", f4: "AI systems", fOld: "Old version" },
+  zh: { n0: "首页", n1: "关于", n2: "作品", n3: "定制", n4: "联系",
+    welcome: "<b>全栈</b>开发者，做真正能用的网站、应用和游戏。全部已上线，点进去就能试。", ctaWorks: "看作品", ctaHire: "找我合作",
+    aboutP: "我是 Atom，全栈开发者，喜欢做大家真的会用的东西：从店铺网站到 Mac 应用和网页游戏。工作之外喜欢汽车和旅行。",
+    a1: "三语网站，带滚动动画", a2: "用 Swift 开发 macOS 应用，GitHub 免费下载", a3: "用 Three.js 做网页 3D 游戏", a4: "每天自动运行的 AI 系统",
+    wkTitle: "作品", wkLede: "每一件都已上线，点卡片即可打开。", wkCount: "件可用作品", open: "打开 →",
+    bdTitle: "想要什么样的网站？", bdLede: "把想要的功能拖进盒子或点击加入，然后把需求发给我。点击盒中的项目可取出。",
+    empty: "放这里", send: "把需求发给 Atom", sum: n => `已选 <b>${n}</b>/4`, full: "盒子满了，点击盒中项目可取出。",
+    mailSubj: "网站咨询", mailBody: l => `你好 Atom，\n\n我想要一个网站，包含：\n${l}\n\n更多细节：\n`,
+    stSub: "每天实际在用的工具",
+    ctLede: "通过 Fastwork 接网站、应用和自动化项目。好沟通，交付快。", ctMail: "发邮件", ctDemos: "查看所有示范网站",
+    f1: "网站", f2: "Mac 应用", f3: "网页游戏", f4: "AI 系统", fOld: "旧版本" },
+};
+let lang = "th";
+const box = [];
+const ico = (id, cls = "") => `<svg class="${cls}" viewBox="0 0 100 100" aria-hidden="true"><use href="#${id}"/></svg>`;
+
+function renderWorks() {
+  $("#rail").innerHTML = WORKS.map(w => `<a class="work" href="${w.url}" target="_blank" rel="noopener" style="--bg:${w.bg};--fg:${w.fg}">
+    <span class="tag">${w.tag[lang]}</span><span class="stamp">${w.st}</span>
+    <div class="frame${w.bar ? " bar" : ""}"><img src="images/work/${w.img}" alt="" loading="${REEL ? "eager" : "lazy"}"></div>
+    <div><h3>${w.n[lang]}</h3><p>${w.d[lang]}</p></div><span class="go">${T[lang].open}</span></a>`).join("");
+  $("#nWorks").textContent = WORKS.length;
+}
+function renderTray() {
+  $("#tray").innerHTML = FEATS.map(f => `<button type="button" class="feat${box.includes(f.id) ? " used" : ""}" data-id="${f.id}" aria-label="${f.n[lang]}">${ico(f.icon)}<b>${f.n[lang]}</b></button>`).join("");
+  $$("#tray .feat").forEach(bindDrag);
+}
+function renderBox() {
+  const d = T[lang];
+  $("#slots").innerHTML = [0, 1, 2, 3].map(i => {
+    const f = box[i] && FEATS.find(x => x.id === box[i]);
+    return f ? `<div class="slot full"><button type="button" data-i="${i}" aria-label="remove ${f.n[lang]}">${ico(f.icon)}<span>${f.n[lang]}</span></button></div>` : `<div class="slot"><span class="hint">${d.empty}</span></div>`;
+  }).join("");
+  $$("#slots button").forEach(b => b.onclick = () => { box.splice(+b.dataset.i, 1); renderBox(); renderTray(); });
+  $("#sum").innerHTML = d.sum(box.length);
+  const send = $("#sendSpec"), list = box.map(id => "- " + FEATS.find(f => f.id === id).n[lang]).join("\n");
+  send.setAttribute("aria-disabled", String(!box.length));
+  send.href = `mailto:${MAIL}?subject=${encodeURIComponent(d.mailSubj)}&body=${encodeURIComponent(d.mailBody(list))}`;
+}
+function renderKits() {
+  $("#kits").innerHTML = KITS.map(k => `<div class="kit"><h3>${ico(k.icon)}${k.n[lang]}</h3><div class="chips">${k.t.map(t => `<span>${t}</span>`).join("")}</div></div>`).join("");
+}
+function addFeat(id) {
+  if (box.includes(id)) return;
+  if (box.length >= 4) { $("#boxEl").animate([{ transform: "translateX(0)" }, { transform: "translateX(-8px)" }, { transform: "translateX(8px)" }, { transform: "translateX(0)" }], { duration: 300 }); showToast(T[lang].full); return; }
+  box.push(id); renderBox(); renderTray();
+  if (box.length === 4) confetti();
+}
+/* a tapped item flies into the box before it lands */
+function flyIn(id) {
+  const src = $(`#tray .feat[data-id="${id}"]`);
+  if (!src || box.includes(id) || box.length >= 4 || !window.gsap) return addFeat(id);
+  const a = src.getBoundingClientRect(), b = $("#slots").children[box.length].getBoundingClientRect();
+  const g = document.createElement("div"); g.className = "ghost"; g.innerHTML = ico(FEATS.find(f => f.id === id).icon);
+  Object.assign(g.style, { left: a.left + a.width / 2 + "px", top: a.top + a.height / 2 + "px" });
+  document.body.appendChild(g);
+  gsap.to(g, { left: b.left + b.width / 2, top: b.top + b.height / 2, rotate: 360, duration: .55, ease: "power2.inOut", onComplete: () => { g.remove(); addFeat(id); } });
+}
+
+/* drag into the box (pointer events, tap to fly in) */
+function bindDrag(btn) {
+  let ghost = null, sx = 0, sy = 0, moved = false;
+  btn.addEventListener("pointerdown", e => { sx = e.clientX; sy = e.clientY; moved = false; btn.setPointerCapture(e.pointerId); });
+  btn.addEventListener("pointermove", e => {
+    if (!btn.hasPointerCapture(e.pointerId)) return;
+    if (!moved && Math.hypot(e.clientX - sx, e.clientY - sy) > 8) {
+      moved = true;
+      ghost = document.createElement("div"); ghost.className = "ghost";
+      ghost.innerHTML = ico(FEATS.find(f => f.id === btn.dataset.id).icon);
+      document.body.appendChild(ghost);
+    }
+    if (ghost) { ghost.style.left = e.clientX + "px"; ghost.style.top = e.clientY + "px"; $("#boxEl").classList.toggle("hot", overBox(e)); }
+  });
+  btn.addEventListener("pointerup", e => {
+    if (ghost) { if (overBox(e)) addFeat(btn.dataset.id); ghost.remove(); ghost = null; $("#boxEl").classList.remove("hot"); }
+    else if (!moved) flyIn(btn.dataset.id);
+  });
+  btn.addEventListener("pointercancel", () => { if (ghost) { ghost.remove(); ghost = null; } $("#boxEl").classList.remove("hot"); });
+  btn.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addFeat(btn.dataset.id); } });
+}
+function overBox(e) { const r = $("#boxEl").getBoundingClientRect(); return e.clientX > r.left && e.clientX < r.right && e.clientY > r.top && e.clientY < r.bottom; }
+
+/* confetti driven by a gsap tween, so the reel recorder can step it frame by frame */
+function confetti() {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || !window.gsap) return;
+  const cv = document.createElement("canvas"); cv.className = "confetti"; document.body.appendChild(cv);
+  const ctx = cv.getContext("2d"), W = cv.width = innerWidth, H = cv.height = innerHeight;
+  const r = $("#boxEl").getBoundingClientRect(), ox = r.left + r.width / 2, oy = r.top + 20;
+  const cols = ["#ec4d0e", "#3e8e4f", "#f1d7a0", "#121212", "#fffdf8", "#ffd23f"];
+  const ps = Array.from({ length: 150 }, () => ({ vx: (Math.random() - .5) * 16, vy: -Math.random() * 15 - 4, s: 5 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .4, c: cols[Math.random() * cols.length | 0] }));
+  const o = { f: 0 };
+  gsap.to(o, { f: 140, duration: 140 / 60, ease: "none", onUpdate: () => {
+    const f = o.f, k = (1 - Math.pow(.99, f)) / .01;
+    ctx.clearRect(0, 0, W, H);
+    ps.forEach(p => { ctx.save(); ctx.translate(ox + p.vx * k, oy + p.vy * f + .225 * f * f); ctx.rotate(p.r + p.vr * f); ctx.fillStyle = p.c; ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); ctx.restore(); });
+  }, onComplete: () => cv.remove() });
+}
+
+function setLang(l) {
+  lang = T[l] ? l : "th";
+  document.documentElement.lang = lang === "zh" ? "zh-Hans" : lang;
+  $$("[data-i18n]").forEach(el => { const v = T[lang][el.dataset.i18n]; if (typeof v === "string") el.textContent = v; });
+  $$("[data-i18n-html]").forEach(el => el.innerHTML = T[lang][el.dataset.i18nHtml]);
+  $$(".langs button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  document.title = lang === "th" ? "Atom · นักพัฒนา Full-Stack" : lang === "en" ? "Atom · Full-stack developer" : "Atom · 全栈开发者";
+  renderWorks(); renderTray(); renderBox(); renderKits();
+  if (window.ScrollTrigger) ScrollTrigger.refresh();
+  try { localStorage.setItem("atom-lang", lang); } catch (e) {}
+}
+$$(".langs button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+const toast = $("#toast"); let tt;
+function showToast(s) { toast.textContent = s; toast.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove("show"), 3500); }
+
+const shotImgs = WORKS.filter(w => !w.bar && w.id !== "tempbar").map(w => `<img src="images/work/${w.img}" alt="">`);
+$$(".shots .row").forEach((r, i) => { const set = (i ? [...shotImgs].reverse() : shotImgs).join(""); r.innerHTML = set + set; });
+
+let saved = null;
+try { saved = new URLSearchParams(location.search).get("lang") || localStorage.getItem("atom-lang"); } catch (e) {}
+setLang(REEL ? "th" : saved || "th");
+
+/* ---------- scroll choreography ---------- */
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!reduce && window.gsap && window.ScrollTrigger) {
+  gsap.registerPlugin(ScrollTrigger);
+  if (REEL) {
+    // the recorder owns the clock: it scrolls, then steps gsap to an exact time
+    gsap.ticker.lagSmoothing(0);
+    gsap.ticker.remove(gsap.updateRoot);
+    window.__reelTick = ms => { ScrollTrigger.update(); gsap.updateRoot(ms / 1000); };
+    window.__reelStops = () => {
+      const y = el => Math.round(el.getBoundingClientRect().top + scrollY);
+      const st = ScrollTrigger.getById("pinx");
+      return [
+        { y: 0, hold: 6.4 },
+        { y: $(".hero").offsetHeight - innerHeight, hold: 1.4 },
+        { y: y($("#about")) - 40, hold: 2.2 },
+        ...(st ? [{ y: st.start, hold: .6 }, { y: st.end, hold: 1 }] : []),
+        { y: y($("#build")) + 40, hold: 4.6 },
+        { y: y($("#stack")) - 60, hold: 2 },
+        { y: document.documentElement.scrollHeight - innerHeight, hold: 3.6 },
+      ];
+    };
+    // the reel plays the game by itself once the box is on screen
+    if (!LOOP) ScrollTrigger.create({ trigger: "#build", start: "top 10%", once: true, onEnter: () => {
+      ["lang", "motion", "bot", "game"].forEach((id, i) => gsap.delayedCall(.35 + i * .8, () => flyIn(id)));
+    } });
+    // a scripted cursor tours the glass controls so the reel shows them reacting to the mouse
+    if (!LOOP) {
+    const cur = document.createElement("div");
+    cur.className = "reel-cursor";
+    cur.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 2.5 19.5 11l-6.3 1.6L9.8 19z" fill="#121212" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+    document.body.append(cur);
+    const pos = { x: innerWidth * .62, y: innerHeight + 40 };
+    const groups = [$(".pill-nav"), $(".langs")];
+    let last = null;
+    const feed = () => {
+      cur.style.translate = `${pos.x}px ${pos.y}px`;
+      const el = document.elementFromPoint(pos.x, pos.y), ev = { bubbles: true, clientX: pos.x, clientY: pos.y, pointerType: "mouse" };
+      if (el !== last) {
+        groups.forEach(g => { if (last && g.contains(last) && !(el && g.contains(el))) g.dispatchEvent(new PointerEvent("pointerleave", ev)); });
+        el?.dispatchEvent(new PointerEvent("pointerover", ev));
+        last = el;
+      }
+      el?.dispatchEvent(new PointerEvent("pointermove", ev));
+    };
+    const at = (sel, dx = 0, dy = 0) => ({ x: () => { const r = $(sel).getBoundingClientRect(); return r.left + r.width / 2 + dx; }, y: () => { const r = $(sel).getBoundingClientRect(); return r.top + r.height / 2 + dy; } });
+    const nav = i => `.pill-nav a:nth-of-type(${i + 1})`;
+    gsap.timeline({ delay: .3, defaults: { ease: "power2.inOut" }, onUpdate: feed })
+      .to(pos, { ...at(nav(1)), duration: .8 })
+      .to(pos, { ...at(nav(2)), duration: .38 }, "+=.15")
+      .to(pos, { ...at(nav(3)), duration: .38 }, "+=.12")
+      .to(pos, { ...at(nav(4)), duration: .38 }, "+=.12")
+      .to(pos, { ...at(nav(1)), duration: .55 }, "+=.3")
+      .to(pos, { ...at(".hero-bar .btn-ink", -20, 6), duration: .85 }, "+=.25")
+      .to(pos, { ...at(".hero-bar .btn-ink", 60, -10), duration: .45 })
+      .to(pos, { ...at(".hero-bar .btn-ink", -60, 12), duration: .5 })
+      .to(pos, { ...at(".hero-bar .btn-soft", 40, -8), duration: .6 }, "+=.1")
+      .to(pos, { ...at(".hero-bar .btn-soft", -50, 10), duration: .5 })
+      .to(pos, { y: innerHeight + 60, x: "+=120", duration: .6, ease: "power2.in" }, "+=.15");
+    }
+  }
+  const mm = gsap.matchMedia();
+  mm.add({ small: "(max-width: 640px)", big: "(min-width: 641px)", wide: "(min-width: 901px)" }, ctx => {
+    const s = ctx.conditions.small;
+    // words start scattered around the capsule, then settle into a stack
+    const tl = gsap.timeline({ scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom bottom", scrub: .6 } });
+    tl.from(".w1", { x: s ? -60 : -260, y: s ? -120 : -180, rotate: -14, scale: 1.25, ease: "none" }, 0)
+      .from(".w2", { x: s ? 120 : 420, y: s ? 20 : 30, rotate: 18, scale: 1.3, ease: "none" }, 0)
+      .from(".w3", { x: s ? -100 : -380, y: s ? 140 : 200, rotate: -22, scale: 1.35, ease: "none" }, 0)
+      .to("#capsule", { scale: s ? .36 : .5, rotate: -8, ease: "none", duration: .55 }, 0)
+      .to("#capsule", { y: s ? "-27svh" : "-17svh", ease: "none", duration: .45 }, .55)
+      .to(".s1", { x: -90, y: -160, rotate: -90, ease: "none" }, 0)
+      .to(".s2", { x: 120, y: -220, rotate: 140, ease: "none" }, 0)
+      .to(".s3", { x: -140, y: 180, rotate: 40, ease: "none" }, 0)
+      .to(".s4", { x: 160, y: 140, rotate: -120, ease: "none" }, 0)
+      .to(".words", { y: s ? "-6svh" : "-17svh", ease: "none" }, .55)
+      .to("#welcome", { opacity: 1, y: -10, ease: "none", duration: .3 }, .7)
+      .to(".hero-bar", { y: 30, opacity: 0, ease: "none", duration: .2 }, .1);
+    // the about card grows out of a pill
+    gsap.from("#aboutCard", { scale: s ? .7 : .35, borderRadius: "999px", y: 60, ease: "power1.out", scrollTrigger: { trigger: "#about", start: "top 100%", end: "top 25%", scrub: 1 } });
+    gsap.from("#badge", { scale: 0, rotate: -120, ease: "elastic.out(1,.45)", duration: 1.6, scrollTrigger: { trigger: "#aboutCard", start: "top 40%", toggleActions: "play none none reverse" } });
+    gsap.to("#badge", { rotate: 360, ease: "none", scrollTrigger: { trigger: "#about", start: "top bottom", end: "bottom top", scrub: 1 } });
+    // works: on wide screens the shelf slides sideways while the section is pinned
+    if (ctx.conditions.wide) {
+      document.documentElement.classList.add("pinx");
+      const rail = $("#rail"), dist = () => Math.max(0, rail.scrollWidth - innerWidth);
+      gsap.to(rail, { x: () => -dist(), ease: "none", scrollTrigger: { id: "pinx", trigger: "#works", start: "top top", end: () => "+=" + dist(), pin: true, scrub: .6, invalidateOnRefresh: true } });
+      gsap.fromTo(".work", { y: 80, rotate: i => i % 2 ? 6 : -6, opacity: 0 }, { y: 0, rotate: 0, opacity: 1, stagger: .07, ease: "back.out(1.6)", duration: .9, clearProps: "transform,opacity", scrollTrigger: { trigger: "#works", start: "top 70%" } });
+      ctx.add(() => () => document.documentElement.classList.remove("pinx"));
+    } else {
+      gsap.fromTo(".work", { y: 60, opacity: 0 }, { y: 0, opacity: 1, stagger: .06, ease: "back.out(1.6)", duration: .8, clearProps: "transform,opacity", scrollTrigger: { trigger: "#works", start: "top 75%" } });
+    }
+    // the tray tiles bounce in
+    gsap.fromTo(".feat", { scale: .3, rotate: -20, opacity: 0 }, { scale: 1, rotate: 0, opacity: 1, stagger: .06, ease: "back.out(1.8)", duration: .7, clearProps: "transform,opacity", scrollTrigger: { trigger: "#build", start: "top 60%" } });
+    // the toolkit word squashes in, cards follow
+    gsap.from(".big", { scaleY: .3, yPercent: 40, opacity: 0, ease: "elastic.out(1,.5)", duration: 1.6, scrollTrigger: { trigger: "#stack", start: "top 70%" } });
+    gsap.from(".kit", { y: 50, opacity: 0, stagger: .1, ease: "back.out(1.5)", duration: .8, scrollTrigger: { trigger: ".kits", start: "top 85%" } });
+    // the sign-off springs up
+    gsap.from(".shout", { scaleY: .2, yPercent: 50, opacity: 0, ease: "elastic.out(1,.5)", duration: 1.6, scrollTrigger: { trigger: "#contact", start: "top 70%" } });
+    gsap.fromTo(".contact .me", { y: 120, rotate: -30, scale: .6, opacity: 0 }, { y: 0, rotate: 0, scale: 1, opacity: 1, ease: "back.out(1.7)", duration: 1, delay: .25, scrollTrigger: { trigger: "#contact", start: "top 70%" } });
+  });
+  // keep the nav pill on the current section
+  ["#top", "#about", "#works", "#build", "#contact"].forEach((id, i) => ScrollTrigger.create({ trigger: id === "#top" ? ".hero" : id, start: "top 50%", end: "bottom 50%", onToggle: self => self.isActive && $$(".pill-nav a").forEach((a, j) => a.classList.toggle("on", i === j)) }));
+}
+</script>
 </body>
 </html>
